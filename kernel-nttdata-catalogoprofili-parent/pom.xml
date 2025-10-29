@@ -1,0 +1,51 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- Identificativo del progetto padre -->
+  <groupId>kernel-nttdata-ncp-parent</groupId>
+  <artifactId>kernel-nttdata-catalogoprofili-parent</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>Kernel NTTDATA Catalogo Profili - Parent</name>
+  <description>POM padre per il progetto Catalogo Profili (NTT Data)</description>
+
+  <modules>
+    <!-- <module>../kernel-nttdata-catalogoprofili-model</module> -->
+    <module>../kernel-nttdata-catalogoprofili-services</module>
+    <module>../kernel-nttdata-catalogoprofili-webapp</module>
+</modules>
+
+
+  <!-- Proprietà condivise -->
+  <properties>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <zk.version>9.6.0</zk.version>
+  </properties>
+
+  <!-- Gestione versioni comuni -->
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.zkoss.zk</groupId>
+        <artifactId>zk</artifactId>
+        <version>${zk.version}</version>
+      </dependency>
+      
+      <!-- Driver per connessione al DB PostGre PGAdmin -->
+      <dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+    <version>42.6.0</version>
+</dependency>
+      
+      
+    </dependencies>
+  </dependencyManagement>
+
+</project>

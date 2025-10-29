@@ -1,0 +1,95 @@
+<?page title="Home - Monte dei Paschi di Siena" contentType="text/html;charset=UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+
+    <window width="100%" height="100%"
+            viewModel="@id('vm') @init('com.nttdata.viewmodel.HomeViewModel')"
+            apply="org.zkoss.bind.BindComposer">
+
+        <style src="/css/home.css" />
+        <script src="/js/home.js" />
+
+        <!-- Barra superiore -->
+        <div sclass="navbar">
+            <hbox>
+                <image id="logoImg" src="/images/logo.png" height="45px" style="margin-right:10px;"/>
+            </hbox>
+            <hbox sclass="menu">
+                <a href="#">Home</a>
+                <a href="#">Servizi</a>
+                <a href="#">Contatti</a>
+            </hbox>
+        </div>
+
+        <!-- Layout principale -->
+        <div sclass="main-layout">
+            <!-- Sidebar -->
+            <div sclass="sidebar">
+                <button label="Ricarica" onClick="@command('loadProfiles')" />
+            </div>
+
+            <!-- Contenuto principale -->
+            <div sclass="content-area">
+
+                <label value="@load(vm.messaggio)" style="font-size:16px; color:#333; margin-bottom: 15px;" />
+
+                <div sclass="table-container">
+
+                    <div sclass="table-header">
+                        <label value="Elenco Profili" style="font-weight: bold; font-size: 14px;" />
+                    </div>
+
+                    <!-- Tabella profili con scroll -->
+                    <div id="tableScrollWrapper" sclass="table-scroll-wrapper" style="max-height: 800px; overflow-y: auto;">
+
+                        <grid id="gridProfili" model="@bind(vm.profiles)" emptyMessage="Nessun record trovato"
+                              selection="@bind(vm.selectedProfile)" sclass="wide-grid" width="100%">
+
+                            <columns sizable="false">
+                                <column label="Nome Abilitazione" width="20%" sort="auto" />
+                                <column label="Aggregato" width="15%" sort="auto" />
+                                <column label="Tipologia" width="15%" sort="auto" />
+                                <column label="Descrizione" width="25%" sort="auto" />
+                                <column label="Sistema Target" width="15%" sort="auto" />
+                                <column label="Azioni" width="10%" />
+                            </columns>
+
+                            <template name="model">
+                                <row>
+                                    <cell><label value="@load(each.nomeAbilitazione)" /></cell>
+                                    <cell><label value="@load(each.aggregato)" /></cell>
+                                    <cell><label value="@load(each.tipologia)" /></cell>
+                                    <cell><label value="@load(each.descrizioneBreve)" /></cell>
+                                    <cell><label value="@load(each.sistemaTarget)" /></cell>
+
+                                    <!-- Pulsanti verticali Modifica-Dettagli-Elimina -->
+                                    <cell>
+                                        <vbox spacing="5px">
+                                            <!-- Modifica -->
+                                            <button label="Modifica"
+                                                    onClick="@command('openEdit', id=each.idProfilo)"
+                                                    style="background-color:#28a745;color:white;border:none;padding:5px 10px;border-radius:4px;width:100%;" />
+
+                                            <!-- Dettagli -->
+                                            <button label="Dettagli"
+                                                    onClick="@command('openDetails', id=each.idProfilo)"
+                                                    style="background-color:#007bff;color:white;border:none;padding:5px 10px;border-radius:4px;width:100%;" />
+
+                                            <!-- Elimina -->
+                                            <button label="Elimina"
+                                                    onClick="@command('confirmAndExecute',
+                                                        message='Sei sicuro di voler eliminare questo profilo?',
+                                                        commandName='deleteProfile',
+                                                        param=each)"
+                                                    style="background:#dc3545;color:white;border:none;padding:5px 10px;border-radius:4px;width:100%;" />
+                                        </vbox>
+                                    </cell>
+                                </row>
+                            </template>
+                        </grid>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </window>
+</zk>
