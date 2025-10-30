@@ -33,4 +33,3 @@ body { margin: 0; padding: 0; overflow-x: hidden; }
 .table-container { flex: 1; border: 2px solid #ddd; border-radius: 8px; background: white; overflow: hidden; display: flex; flex-direction: column; }
 .table-header { background: #f8f9fa; padding: 15px; border-bottom: 1px solid #ddd; flex-shrink: 0; }
 
-/* … e via dicendo, copia tutti gli stili della tua home originale */

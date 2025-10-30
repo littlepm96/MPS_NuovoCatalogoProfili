@@ -16,25 +16,19 @@ public class DettagliProfiloViewModel {
     @Init
     @NotifyChange({ "profile", "messaggio" })
     public void init(@ContextParam(ContextType.EXECUTION) org.zkoss.zk.ui.Execution execution) {
-        String idParam = execution.getParameter("id");
+        String entCode = execution.getParameter("entCode"); // parametro ENT_CODE
 
-        if (idParam != null) {
-            try {
-                int id = Integer.parseInt(idParam);
-                profile = profileService.getProfileById(id);
+        if (entCode != null && !entCode.isEmpty()) {
+            profile = profileService.getProfileByEntCode(entCode);
 
-                if (profile != null) {
-                    messaggio = "Dettagli del profilo ID: " + id;
-                } else {
-                    messaggio = "Nessun profilo trovato con ID " + id;
-                    Clients.showNotification(messaggio, "warning", null, "middle_center", 2500);
-                }
-            } catch (NumberFormatException e) {
-                messaggio = "ID non valido: " + idParam;
-                Clients.showNotification(messaggio, "error", null, "middle_center", 2500);
+            if (profile != null) {
+                messaggio = "Dettagli del profilo ENT_CODE: " + entCode;
+            } else {
+                messaggio = "Nessun profilo trovato con ENT_CODE " + entCode;
+                Clients.showNotification(messaggio, "warning", null, "middle_center", 2500);
             }
         } else {
-            messaggio = "Parametro ID mancante nella URL.";
+            messaggio = "Parametro ENT_CODE mancante nella URL.";
             Clients.showNotification(messaggio, "error", null, "middle_center", 2500);
         }
     }

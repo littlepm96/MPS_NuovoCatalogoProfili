@@ -3,6 +3,7 @@ package com.nttdata.viewmodel;
 import org.zkoss.bind.annotation.*;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.util.Clients;
+
 import com.nttdata.model.Profile;
 import com.nttdata.service.ProfileService;
 
@@ -13,30 +14,24 @@ public class ModificaProfiloViewModel {
     private String messaggio = "";
 
     // =========================
-    // Init: carica il profilo dal DB
+    // Init: carica il profilo dal DB usando ENT_CODE
     // =========================
     @Init
-    @NotifyChange("profile")
+    @NotifyChange({ "profile", "messaggio" })
     public void init(@ContextParam(ContextType.EXECUTION) org.zkoss.zk.ui.Execution execution) {
-        String idParam = execution.getParameter("id"); // es: modificaProfilo.zul?id=3
+        String entCode = execution.getParameter("entCode"); // es: modificaProfilo.zul?entCode=XYZ
 
-        if (idParam != null) {
-            try {
-                int id = Integer.parseInt(idParam);
-                profile = profileService.getProfileById(id);
+        if (entCode != null && !entCode.isEmpty()) {
+            profile = profileService.getProfileByEntCode(entCode);
 
-                if (profile != null) {
-                    messaggio = "Modifica del profilo ID: " + id;
-                } else {
-                    messaggio = "Nessun profilo trovato con ID " + id;
-                    Clients.showNotification(messaggio, "warning", null, "middle_center", 2500);
-                }
-            } catch (NumberFormatException e) {
-                messaggio = "ID non valido: " + idParam;
-                Clients.showNotification(messaggio, "error", null, "middle_center", 2500);
+            if (profile != null) {
+                messaggio = "Modifica del profilo ENT_CODE: " + entCode;
+            } else {
+                messaggio = "Nessun profilo trovato con ENT_CODE " + entCode;
+                Clients.showNotification(messaggio, "warning", null, "middle_center", 2500);
             }
         } else {
-            messaggio = "Parametro ID mancante nella URL.";
+            messaggio = "Parametro ENT_CODE mancante nella URL.";
             Clients.showNotification(messaggio, "error", null, "middle_center", 2500);
         }
     }

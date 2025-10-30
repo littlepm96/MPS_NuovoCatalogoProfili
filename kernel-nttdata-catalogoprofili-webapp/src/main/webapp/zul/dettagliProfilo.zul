@@ -1,8 +1,10 @@
 <?page title="Dettagli Profilo - Monte dei Paschi di Siena" contentType="text/html;charset=UTF-8"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
 
-    <!-- Layout principale verticale -->
-    <vlayout width="100%" height="100%">
+    <vlayout width="100%" height="100%"
+             viewModel="@id('vm') @init('com.nttdata.viewmodel.DettagliProfiloViewModel')"
+             apply="org.zkoss.bind.BindComposer">
+
         <style src="/css/home.css" />
 
         <!-- Header -->
@@ -12,54 +14,40 @@
             </hbox>
         </div>
 
-        <div style="height:20px;"></div> <!-- Spacer -->
+        <div style="height:20px;"></div>
 
-        <!-- Contenuto principale -->
-        <vlayout spacing="20px" style="flex:1; width:80%; margin:0 auto;" 
-                 viewModel="@id('vm') @init('com.nttdata.viewmodel.DettagliProfiloViewModel')"
-                 apply="org.zkoss.bind.BindComposer">
+        <vlayout spacing="15px" width="80%" style="margin:0 auto;">
 
-            <!-- Messaggio -->
             <label value="@load(vm.messaggio)" style="font-weight:bold; font-size:20px; color:#333;"/>
 
-            <!-- Form dei dettagli -->
-            <vlayout spacing="15px" width="100%">
+            <!-- Mostra tutti i campi -->
+            <vlayout spacing="10px" width="100%">
 
-                <hlayout spacing="10px" width="100%">
-                    <label value="Nome Abilitazione:" width="200px"/>
-                    <textbox value="@load(vm.profile.nomeAbilitazione)" hflex="1" readonly="true"/>
-                </hlayout>
-
-                <hlayout spacing="10px" width="100%">
-                    <label value="Aggregato:" width="200px"/>
-                    <textbox value="@load(vm.profile.aggregato)" hflex="1" readonly="true"/>
-                </hlayout>
-
-                <hlayout spacing="10px" width="100%">
-                    <label value="Tipologia:" width="200px"/>
-                    <textbox value="@load(vm.profile.tipologia)" hflex="1" readonly="true"/>
-                </hlayout>
-
-                <hlayout spacing="10px" width="100%">
-                    <label value="Descrizione:" width="200px"/>
-                    <textbox value="@load(vm.profile.descrizioneBreve)" hflex="1" readonly="true"/>
-                </hlayout>
-
-                <hlayout spacing="10px" width="100%">
-                    <label value="Sistema Target:" width="200px"/>
-                    <textbox value="@load(vm.profile.sistemaTarget)" hflex="1" readonly="true"/>
-                </hlayout>
+                <hlayout spacing="10px" width="100%"><label value="Target:" width="200px"/><textbox value="@load(vm.profile.target)" hflex="1" readonly="true"/></hlayout>
+                <hlayout spacing="10px" width="100%"><label value="Ent_code:" width="200px"/><textbox value="@load(vm.profile.entCode)" hflex="1" readonly="true"/></hlayout>
+                <hlayout spacing="10px" width="100%"><label value="Ent_value:" width="200px"/><textbox value="@load(vm.profile.entValue)" hflex="1" readonly="true"/></hlayout>
+                <hlayout spacing="10px" width="100%"><label value="Gruppo:" width="200px"/><textbox value="@load(vm.profile.gruppo)" hflex="1" readonly="true"/></hlayout>
+                <hlayout spacing="10px" width="100%"><label value="Description:" width="200px"/><textbox value="@load(vm.profile.description)" hflex="1" readonly="true"/></hlayout>
+                <hlayout spacing="10px" width="100%"><label value="App Instance Key:" width="200px"/><textbox value="@load(vm.profile.appInstanceKey)" hflex="1" readonly="true"/></hlayout>
+                <hlayout spacing="10px" width="100%"><label value="APM:" width="200px"/><textbox value="@load(vm.profile.apm)" hflex="1" readonly="true"/></hlayout>
+                <hlayout spacing="10px" width="100%"><label value="Grant Type:" width="200px"/><textbox value="@load(vm.profile.grantType)" hflex="1" readonly="true"/></hlayout>
+                <hlayout spacing="10px" width="100%"><label value="Gadis Tecnologia:" width="200px"/><textbox value="@load(vm.profile.gadisTecnologia)" hflex="1" readonly="true"/></hlayout>
+                <hlayout spacing="10px" width="100%"><label value="Gadis Approvatore:" width="200px"/><textbox value="@load(vm.profile.gadisApprovatore)" hflex="1" readonly="true"/></hlayout>
+                <hlayout spacing="10px" width="100%"><label value="ATS:" width="200px"/><textbox value="@load(vm.profile.ats)" hflex="1" readonly="true"/></hlayout>
+                <hlayout spacing="10px" width="100%"><label value="App Instance Key 1:" width="200px"/><textbox value="@load(vm.profile.appInstanceKey1)" hflex="1" readonly="true"/></hlayout>
+                <hlayout spacing="10px" width="100%"><label value="Ent List Key:" width="200px"/><textbox value="@load(vm.profile.entListKey)" hflex="1" readonly="true"/></hlayout>
 
             </vlayout>
 
-            <!-- Pulsante torna alla home -->
+            <!-- Pulsante home -->
             <hlayout spacing="15px" style="justify-content:flex-end; width:100%;">
                 <button label="Torna alla Home"
                         onClick="@command('goBack')"
-                        style="background-color:#007bff;color:white;border:none;padding:10px 25px;border-radius:5px;font-weight:bold;"/>
+                        style="background-color:#7b002c;color:white;border:none;padding:10px 25px;border-radius:5px;font-weight:bold;"/>
             </hlayout>
 
         </vlayout>
+
     </vlayout>
 
 </zk>
