@@ -1,174 +1,108 @@
 package com.nttdata.viewmodel;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.zkoss.bind.annotation.*;
-import org.zkoss.bind.BindUtils;
-import org.zkoss.zul.Messagebox;
-import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zk.ui.Executions;
-
 import com.nttdata.model.Profile;
 import com.nttdata.service.ProfileService;
+import org.zkoss.bind.annotation.Command;
+import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.zul.ListModelList;
+
+import java.util.List;
 
 public class HomeViewModel {
 
-    // =========================
-    // ATTRIBUTI
-    // =========================
-    private List<Profile> profiles;
-    private List<Profile> filteredProfiles;
-    private Profile selectedProfile;
-
-    private String messaggio = "Profili caricati dal database PostgreSQL";
     private ProfileService profileService = new ProfileService();
 
-    // Campi per la ricerca
-    private String searchText = "";
-    private String searchColumn = "target";
+    private List<Profile> allProfiles;               // Tutti i profili dal DB
+    private ListModelList<Profile> filteredProfiles; // Profili filtrati da mostrare nella grid
+    private Profile selectedProfile;                 // Profilo selezionato
+    private String searchText;                       // Testo della ricerca
+    private String messaggio = "Benvenuto nella gestione profili";
 
     // =========================
-    // INIT
+    // COSTRUTTORE: CARICA TUTTI I PROFILI
     // =========================
-    @Init
-    @NotifyChange({ "profiles", "filteredProfiles", "messaggio" })
-    public void init() {
+    public HomeViewModel() {
         loadProfiles();
     }
 
     // =========================
-    // CARICA PROFILI
+    // CARICA TUTTI I PROFILI DAL DB
     // =========================
     @Command
-    @NotifyChange({ "profiles", "filteredProfiles", "messaggio" })
+    @NotifyChange({"filteredProfiles", "allProfiles"})
     public void loadProfiles() {
-        profiles = profileService.getAllProfiles();
-        filteredProfiles = profiles;
-        messaggio = "Elenco aggiornato: " + (profiles != null ? profiles.size() : 0) + " profili";
-    }
-
-    // =========================
-    // CONFERMA ED ESEGUE AZIONE
-    // =========================
-    @Command
-    public void confirmAndExecute(
-            @BindingParam("message") String message,
-            @BindingParam("commandName") String commandName,
-            @BindingParam("param") Object param) {
-
-        Messagebox.show(message, "Conferma azione",
-            new Messagebox.Button[] { Messagebox.Button.YES, Messagebox.Button.NO },
-            Messagebox.QUESTION,
-            event -> {
-                if (Messagebox.ON_YES.equals(event.getName())) {
-                    if ("deleteProfile".equals(commandName)) {
-                        deleteProfile((Profile) param);
-                    }
-                }
-            });
-    }
-
-    // =========================
-    // ELIMINA PROFILO
-    // =========================
-    @Command
-    @NotifyChange({ "profiles", "filteredProfiles", "messaggio" })
-    public void deleteProfile(@BindingParam("profile") Profile profile) {
-        if (profile == null || profile.getEntCode() == null) return;
-
-        try {
-            boolean ok = profileService.deleteProfile(profile.getEntCode());
-            if (ok) {
-                loadProfiles();
-                Clients.showNotification("Profilo eliminato con successo.", "info", null, "middle_center", 2000);
-            } else {
-                Clients.showNotification("Errore: impossibile eliminare il profilo.", "error", null, "middle_center", 3000);
-            }
-        } catch (Exception e) {
-            messaggio = "Errore: " + e.getMessage();
-            e.printStackTrace();
-            Clients.showNotification("Si è verificato un errore: " + e.getMessage(), "error", null, "middle_center", 3000);
+        allProfiles = profileService.getAllProfiles();
+        if (allProfiles != null) {
+            filteredProfiles = new ListModelList<>(allProfiles);
+        } else {
+            filteredProfiles = new ListModelList<>();
         }
-
-        BindUtils.postNotifyChange(null, null, this, "profiles");
-        BindUtils.postNotifyChange(null, null, this, "filteredProfiles");
-        BindUtils.postNotifyChange(null, null, this, "messaggio");
     }
 
     // =========================
-    // APERTURA PAGINE
-    // =========================
-    @Command
-    public void openDetails(@BindingParam("entCode") String entCode) {
-        Executions.sendRedirect("dettagliProfilo.zul?entCode=" + entCode);
-    }
-
-    @Command
-    public void openEdit(@BindingParam("entCode") String entCode) {
-        Executions.sendRedirect("modificaProfilo.zul?entCode=" + entCode);
-    }
-
-    // =========================
-    // FILTRO PROFILI
+    // FILTRA PROFILI IN BASE AL TESTO DI RICERCA
     // =========================
     @Command
     @NotifyChange("filteredProfiles")
     public void filterProfiles() {
-        if (searchText == null || searchText.isEmpty()) {
-            filteredProfiles = profiles;
+        if (allProfiles == null) return;
+
+        String lowerSearch = (searchText != null) ? searchText.toLowerCase().trim() : "";
+
+        if (lowerSearch.isEmpty()) {
+            filteredProfiles = new ListModelList<>(allProfiles);
             return;
         }
 
-        String lowerText = searchText.toLowerCase();
+        List<Profile> result = allProfiles.stream()
+            .filter(p -> (p.getTarget() != null && p.getTarget().toLowerCase().contains(lowerSearch)) ||
+                         (p.getEntCode() != null && p.getEntCode().toLowerCase().contains(lowerSearch)) ||
+                         (p.getEntValue() != null && p.getEntValue().toLowerCase().contains(lowerSearch)) ||
+                         (p.getGruppo() != null && p.getGruppo().toLowerCase().contains(lowerSearch)) ||
+                         (p.getApm() != null && p.getApm().toLowerCase().contains(lowerSearch)))
+            .toList();
 
-        filteredProfiles = profiles.stream()
-            .filter(p -> {
-                switch (searchColumn) {
-                    case "target": return contains(p.getTarget(), lowerText);
-                    case "entCode": return contains(p.getEntCode(), lowerText);
-                    case "entValue": return contains(p.getEntValue(), lowerText);
-                    case "gruppo": return contains(p.getGruppo(), lowerText);
-                    case "description": return contains(p.getDescription(), lowerText);
-                    case "appInstanceKey": return contains(p.getAppInstanceKey(), lowerText);
-                    case "apm": return contains(p.getApm(), lowerText);
-                    case "grantType": return contains(p.getGrantType(), lowerText);
-                    case "gadisTecnologia": return contains(p.getGadisTecnologia(), lowerText);
-                    case "gadisApprovatore": return contains(p.getGadisApprovatore(), lowerText);
-                    case "ats": return contains(p.getAts(), lowerText);
-                    case "appInstanceKey1": return contains(p.getAppInstanceKey1(), lowerText);
-                    case "entListKey": return contains(p.getEntListKey(), lowerText);
-                    default: return false;
-                }
-            })
-            .collect(Collectors.toList());
-    }
-
-    private boolean contains(String field, String text) {
-        return field != null && field.toLowerCase().contains(text);
+        filteredProfiles = new ListModelList<>(result);
     }
 
     // =========================
-    // GETTERS E SETTERS
+    // PULISCE IL CAMPO DI RICERCA E MOSTRA TUTTI I PROFILI
     // =========================
-    public List<Profile> getProfiles() { return profiles; }
-    public void setProfiles(List<Profile> profiles) { this.profiles = profiles; }
+    @Command
+    @NotifyChange("filteredProfiles")
+    public void clearSearch() {
+        searchText = "";
+        if (allProfiles != null) {
+            filteredProfiles = new ListModelList<>(allProfiles);
+        } else {
+            filteredProfiles = new ListModelList<>();
+        }
+    }
 
-    public List<Profile> getFilteredProfiles() { return filteredProfiles; }
-    public void setFilteredProfiles(List<Profile> filteredProfiles) { this.filteredProfiles = filteredProfiles; }
+    // =========================
+    // GETTER E SETTER
+    // =========================
+    public ListModelList<Profile> getFilteredProfiles() {
+        return filteredProfiles;
+    }
 
-    public Profile getSelectedProfile() { return selectedProfile; }
-    public void setSelectedProfile(Profile selectedProfile) { this.selectedProfile = selectedProfile; }
+    public Profile getSelectedProfile() {
+        return selectedProfile;
+    }
 
-    public String getMessaggio() { return messaggio; }
-    public void setMessaggio(String messaggio) { this.messaggio = messaggio; }
+    public void setSelectedProfile(Profile selectedProfile) {
+        this.selectedProfile = selectedProfile;
+    }
 
-    public String getSearchText() { return searchText; }
-    public void setSearchText(String searchText) { this.searchText = searchText; }
+    public String getSearchText() {
+        return searchText;
+    }
 
-    public String getSearchColumn() { return searchColumn; }
-    public void setSearchColumn(String searchColumn) { this.searchColumn = searchColumn; }
+    public void setSearchText(String searchText) {
+        this.searchText = searchText;
+    }
 
-    public ProfileService getProfileService() { return profileService; }
-    public void setProfileService(ProfileService profileService) { this.profileService = profileService; }
+    public String getMessaggio() {
+        return messaggio;
+    }
 }

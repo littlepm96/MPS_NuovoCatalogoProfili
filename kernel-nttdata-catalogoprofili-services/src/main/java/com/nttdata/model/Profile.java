@@ -16,10 +16,8 @@ public class Profile {
     private String appInstanceKey1;
     private String entListKey;
 
-    // Costruttore vuoto
     public Profile() {}
 
-    // Costruttore completo
     public Profile(String target, String entCode, String entValue, String gruppo,
                    String description, String appInstanceKey, String apm, String grantType,
                    String gadisTecnologia, String gadisApprovatore, String ats,
@@ -39,7 +37,6 @@ public class Profile {
         this.entListKey = entListKey;
     }
 
-    // ===== GETTER E SETTER =====
     public String getTarget() { return target; }
     public void setTarget(String target) { this.target = target; }
 

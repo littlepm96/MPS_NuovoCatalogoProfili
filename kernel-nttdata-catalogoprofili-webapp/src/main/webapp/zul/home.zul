@@ -36,39 +36,26 @@
                 <label value="@load(vm.messaggio)"
                        style="font-size:16px; color:#333; margin-bottom:15px;" />
 
-                <div sclass="table-container">
+                <!-- 🔍 Barra di ricerca -->
+                <hbox style="margin-bottom:10px;">
+                    <textbox placeholder="Cerca per Target, Ent_code, Ent_value, Gruppo o APM..."
+                             width="300px"
+                             value="@bind(vm.searchText)" />
+                    <button label="Cerca" onClick="@command('filterProfiles')"
+                            style="margin-left:10px; background-color:#7b002c; color:white;
+                                   border:none; padding:5px 10px; border-radius:4px;" />
+                    <button label="Pulisci" onClick="@command('clearSearch')"
+                            style="margin-left:10px; background-color:#7b002c; color:white;
+                                   border:none; padding:5px 10px; border-radius:4px;" />
+                </hbox>
 
+                <!-- Tabella -->
+                <div sclass="table-container">
                     <div sclass="table-header">
                         <label value="Elenco Profili"
                                style="font-weight:bold; font-size:14px; margin-bottom:5px;" />
                     </div>
 
-                    <!-- Barra di ricerca -->
-                    <div sclass="search-bar" style="margin-bottom:10px; display:flex; gap:5px; width:400px;">
-                        <!-- Combobox corretta -->
-                        <combobox width="150px"
-                                  value="@bind(vm.searchColumn) @save(vm.searchColumn)"
-                                  placeholder="Seleziona colonna">
-                            <comboitem label="Target" value="target" />
-                            <comboitem label="Ent_code" value="entCode" />
-                            <comboitem label="Ent_value" value="entValue" />
-                            <comboitem label="Gruppo" value="gruppo" />
-                            <comboitem label="APM" value="apm" />
-                        </combobox>
-
-                        <textbox id="txtSearch"
-                                 value="@bind(vm.searchText) @save(vm.searchText)"
-                                 placeholder="Inserisci testo..."
-                                 style="flex:1; padding:5px; border-radius:4px; border:1px solid #ccc;" />
-
-                        <button label="Cerca" onClick="@command('filterProfiles')"
-                                style="padding:5px 10px; border-radius:4px; border:none; background-color:#007bff; color:white;" />
-                        <button label="Reset"
-                                onClick="@command('filterProfiles', searchText='')"
-                                style="padding:5px 10px; border-radius:4px; border:none; background-color:#6c757d; color:white;" />
-                    </div>
-
-                    <!-- Tabella profili con scroll -->
                     <div id="tableScrollWrapper"
                          sclass="table-scroll-wrapper"
                          style="max-height:650px; overflow-y:auto;">
@@ -81,41 +68,39 @@
                               width="100%">
 
                             <columns sizable="false">
-                                <column label="Target" width="20%" sort="auto" />
-                                <column label="Ent_code" width="15%" sort="auto" />
-                                <column label="Ent_value" width="15%" sort="auto" />
-                                <column label="Gruppo" width="25%" sort="auto" />
-                                <column label="APM" width="15%" sort="auto" />
-                                <column label="Azioni" width="10%" />
+                                <column label="Target" width="20%" style="background-color:#7b002c; color:white;"/>
+                                <column label="Ent_code" width="15%" style="background-color:#7b002c; color:white;"/>
+                                <column label="Ent_value" width="15%" style="background-color:#7b002c; color:white;"/>
+                                <column label="Gruppo" width="25%" style="background-color:#7b002c; color:white;"/>
+                                <column label="APM" width="15%" style="background-color:#7b002c; color:white;"/>
+                                <column label="Azioni" width="10%" style="background-color:#7b002c; color:white;"/>
                             </columns>
 
                             <template name="model">
                                 <row>
-                                    <cell><label value="@load(each.target)" /></cell>
-                                    <cell><label value="@load(each.entCode)" /></cell>
-                                    <cell><label value="@load(each.entValue)" /></cell>
-                                    <cell><label value="@load(each.gruppo)" /></cell>
-                                    <cell><label value="@load(each.apm)" /></cell>
+                                    <label value="@load(each.target)" />
+                                    <label value="@load(each.entCode)" />
+                                    <label value="@load(each.entValue)" />
+                                    <label value="@load(each.gruppo)" />
+                                    <label value="@load(each.apm)" />
 
-                                    <cell>
-                                        <vbox spacing="5px">
-                                            <button label="Modifica"
-                                                    onClick="@command('openEdit', entCode=each.entCode)"
-                                                    style="background-color:#7b002c;color:white;border:none;
-                                                           padding:5px 10px;border-radius:4px;width:100%;" />
-                                            <button label="Dettagli"
-                                                    onClick="@command('openDetails', entCode=each.entCode)"
-                                                    style="background-color:#7b002c;color:white;border:none;
-                                                           padding:5px 10px;border-radius:4px;width:100%;" />
-                                            <button label="Elimina"
-                                                    onClick="@command('confirmAndExecute',
-                                                                      message='Sei sicuro di voler eliminare questo profilo?',
-                                                                      commandName='deleteProfile',
-                                                                      param=each)"
-                                                    style="background:#7b002c;color:white;border:none;
-                                                           padding:5px 10px;border-radius:4px;width:100%;" />
-                                        </vbox>
-                                    </cell>
+                                    <vbox spacing="5px">
+                                        <button label="Modifica"
+                                                onClick="@command('openEdit', entCode=each.entCode)"
+                                                style="background-color:#7b002c;color:white;border:none;
+                                                       padding:5px 10px;border-radius:4px;width:100%;" />
+                                        <button label="Dettagli"
+                                                onClick="@command('openDetails', entCode=each.entCode)"
+                                                style="background-color:#7b002c;color:white;border:none;
+                                                       padding:5px 10px;border-radius:4px;width:100%;" />
+                                        <button label="Elimina"
+                                                onClick="@command('confirmAndExecute',
+                                                                  message='Sei sicuro di voler eliminare questo profilo?',
+                                                                  commandName='deleteProfile',
+                                                                  param=each)"
+                                                style="background:#7b002c;color:white;border:none;
+                                                       padding:5px 10px;border-radius:4px;width:100%;" />
+                                    </vbox>
                                 </row>
                             </template>
 
