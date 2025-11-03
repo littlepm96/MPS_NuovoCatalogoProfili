@@ -13,7 +13,7 @@
                        style="margin-right:10px;" />
             </hbox>
             <hbox sclass="menu">
-                <a href="home.zul">Home</a>
+                <a href="index.zul">Home</a>
                 <a href="#">Servizi</a>
                 <a href="#">Contatti</a>
             </hbox>
@@ -24,16 +24,12 @@
 
             <!-- Sidebar -->
             <div sclass="sidebar">
-                <button label="Home" 
-                        onClick='Executions.sendRedirect("home.zul")'
-                        style="width:100%; margin-bottom:12px; background-color:#7b002c; color:white;
-                               border:none; padding:10px; border-radius:6px; cursor:pointer;" />
                 <button label="Profili" 
-                        onClick='Executions.sendRedirect("profili.zul")'
+                        onClick='Executions.sendRedirect("zul/home.zul")'
                         style="width:100%; margin-bottom:12px; background-color:#7b002c; color:white;
                                border:none; padding:10px; border-radius:6px; cursor:pointer;" />
                 <button label="Aggregati" 
-                        onClick='Executions.sendRedirect("aggregati.zul")'
+                        onClick='Executions.sendRedirect("zul/aggregati.zul")'
                         style="width:100%; margin-bottom:12px; background-color:#7b002c; color:white;
                                border:none; padding:10px; border-radius:6px; cursor:pointer;" />
             </div>
@@ -41,10 +37,12 @@
             <!-- Contenuto principale -->
             <div sclass="content-area">
                 <div style="text-align:center; padding-top:100px;">
-                    <label value="Benvenuto nel Catalogo Profili"
-                           style="color:#7b002c; font-size:48px; font-weight:bold; display:block; margin-bottom:20px;" />
-                    <label value="Seleziona una sezione dal menu laterale per iniziare"
-                           style="color:#666; font-size:20px; display:block;" />
+                    <h1 style="color:#7b002c; font-size:48px; margin-bottom:20px;">
+                        Benvenuto nel Catalogo Profili
+                    </h1>
+                    <p style="color:#666; font-size:20px;">
+                        Seleziona una sezione dal menu laterale per iniziare
+                    </p>
                 </div>
             </div>
         </div>

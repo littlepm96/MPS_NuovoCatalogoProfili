@@ -35,7 +35,7 @@ public class DettagliProfiloViewModel {
 
     @Command
     public void goBack() {
-        Executions.sendRedirect("home.zul");
+        Executions.sendRedirect("profili.zul");
     }
 
     // Getters

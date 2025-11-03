@@ -52,7 +52,7 @@ public class ModificaProfiloViewModel {
             if (ok) {
                 messaggio = "Profilo aggiornato con successo!";
                 Clients.showNotification("Profilo aggiornato!", "info", null, "middle_center", 2000);
-                Executions.sendRedirect("home.zul"); // torna alla home dopo il salvataggio
+                Executions.sendRedirect("profili.zul");
             } else {
                 messaggio = "Errore durante l'aggiornamento!";
                 Clients.showNotification("Errore!", "error", null, "middle_center", 2000);

@@ -12,6 +12,36 @@ body {
     color: #333;
 }
 
+/* Background applicato a main-layout invece che a body */
+.main-layout {
+    margin-top: 60px;
+    height: calc(100vh - 60px);
+    display: flex;
+    background-image: url('../images/NIU-Sfondo.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+/* Optional: leggero overlay per migliorare leggibilità dei contenuti */
+/* ridotta opacità per permettere di vedere lo sfondo */
+.content-area::before {
+	content: "";
+	position: absolute;
+	pointer-events: none;
+	inset: 0;
+	background: rgba(255,255,255,0.75); /* aumentata leggibilità testo */
+	border-radius: inherit;
+	z-index: 0;
+}
+
+/* Assicura che il contenuto stia sopra l'overlay */
+.content-area > * {
+	position: relative;
+	z-index: 1;
+}
+
 /* Navbar */
 .navbar {
     background-color: #7b002c;
@@ -43,13 +73,6 @@ body {
 
 .menu a:hover {
     text-decoration: underline;
-}
-
-/* Layout principale */
-.main-layout {
-    margin-top: 60px;
-    height: calc(100vh - 60px);
-    display: flex;
 }
 
 /* Sidebar */
@@ -91,6 +114,7 @@ body {
     flex-direction: column;
     overflow: hidden;
     padding: 25px;
+    position: relative;
 }
 
 /* Contenitore tabella */
@@ -114,4 +138,91 @@ body {
     font-weight: bold;
     font-size: 16px;
     color: #444;
+}
+
+/* Pulsanti dimensione pagina */
+.page-size-btn {
+    background-color: #7b002c;
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s ease;
+}
+
+.page-size-btn:hover:not(:disabled) {
+    background-color: #9b1542;
+}
+
+.page-size-btn:disabled {
+    background-color: #ddd;
+    color: #666;
+    cursor: not-allowed;
+}
+
+/* Pulsanti paginazione */
+.pagination-btn {
+    background-color: #7b002c;
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    min-width: 35px;
+    transition: background-color 0.3s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background-color: #9b1542;
+}
+
+.pagination-btn:disabled {
+    background-color: #ddd;
+    color: #999;
+    cursor: not-allowed;
+}
+
+/* Stili per combobox e input ricerca */
+.z-combobox-input {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px 10px;
+}
+
+.z-combobox-input:focus {
+    border-color: #7b002c;
+    outline: none;
+}
+
+.z-combobox-button {
+    background-color: #7b002c;
+    border-color: #7b002c;
+}
+
+.z-combobox-button:hover {
+    background-color: #9b1542;
+}
+
+/* Effetto hover sulle righe della tabella */
+.z-row:hover {
+    background-color: #f0f0f0 !important;
+    transition: background-color 0.2s ease;
+}
+
+.z-row {
+    transition: background-color 0.2s ease;
+}
+
+/* Effetto hover sulle icone di azione */
+.z-image {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.z-image:hover {
+    opacity: 0.7;
+    transform: scale(1.1);
 }

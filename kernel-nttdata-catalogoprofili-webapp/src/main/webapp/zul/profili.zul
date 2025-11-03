@@ -1,0 +1,202 @@
+<?page title="Profili - Monte dei Paschi di Siena" contentType="text/html;charset=UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window width="100%" height="100%"
+            viewModel="@id('vm') @init('com.nttdata.viewmodel.HomeViewModel')"
+            apply="org.zkoss.bind.BindComposer">
+
+        <style src="/css/home.css" />
+        <script src="/js/home.js" />
+
+        <!-- Barra superiore -->
+        <div sclass="navbar">
+            <hbox>
+                <image id="logoImg"
+                       src="/images/logo.png"
+                       height="45px"
+                       style="margin-right:10px;" />
+            </hbox>
+            <hbox sclass="menu">
+                <a href="home.zul">Home</a>
+                <a href="#">Servizi</a>
+                <a href="#">Contatti</a>
+            </hbox>
+        </div>
+
+        <!-- Layout principale -->
+        <div sclass="main-layout">
+
+            <!-- Sidebar -->
+            <div sclass="sidebar">
+                <button label="Home" onClick='Executions.sendRedirect("home.zul")' />
+                <button label="Profili" onClick='Executions.sendRedirect("profili.zul")' />
+                <button label="Aggregati" onClick='Executions.sendRedirect("aggregati.zul")' />
+            </div>
+
+            <!-- Contenuto principale -->
+            <div sclass="content-area">
+
+                <label value="@load(vm.messaggio)"
+                       style="font-size:16px; color:#333; margin-bottom:15px;" />
+
+                <!-- 🔍 Barra di ricerca con filtro per colonna -->
+                <hbox style="margin-bottom:10px;" align="center">
+                    <label value="Cerca in:" style="margin-right:5px; font-weight:500;"/>
+                    <combobox value="@bind(vm.searchColumn)" 
+                              width="150px"
+                              readonly="true"
+                              style="margin-right:10px;">
+                        <comboitem label="Tutti" value="Tutti" />
+                        <comboitem label="Target" value="Target" />
+                        <comboitem label="Ent_code" value="Ent_code" />
+                        <comboitem label="Ent_value" value="Ent_value" />
+                        <comboitem label="Gruppo" value="Gruppo" />
+                        <comboitem label="APM" value="APM" />
+                    </combobox>
+                    
+                    <textbox placeholder="Inserisci testo da cercare..."
+                             width="300px"
+                             value="@bind(vm.searchText)"
+                             style="margin-right:10px;" />
+                    
+                    <button label="Cerca" onClick="@command('filterProfiles')"
+                            style="background-color:#7b002c; color:white;
+                                   border:none; padding:5px 15px; border-radius:4px; font-weight:500;" />
+                    <button label="Pulisci" onClick="@command('clearSearch')"
+                            style="margin-left:10px; background-color:#6c757d; color:white;
+                                   border:none; padding:5px 15px; border-radius:4px; font-weight:500;" />
+                </hbox>
+
+                <!-- Contenitore tabella -->
+                <div sclass="table-container">
+                    <div sclass="table-header">
+                        <hbox align="center" pack="stretch" width="100%">
+                            <label value="Elenco Profili"
+                                   style="font-weight:bold; font-size:14px;" />
+                            
+                            <!-- Selettore dimensione pagina -->
+                            <hbox align="center" spacing="5px">
+                                <label value="Righe per pagina:" style="font-size:12px;"/>
+                                <button label="10" 
+                                        onClick="@command('changePageSize', size=10)"
+                                        disabled="@load(vm.pageSize eq 10)"
+                                        sclass="page-size-btn" />
+                                <button label="50" 
+                                        onClick="@command('changePageSize', size=50)"
+                                        disabled="@load(vm.pageSize eq 50)"
+                                        sclass="page-size-btn" />
+                                <button label="100" 
+                                        onClick="@command('changePageSize', size=100)"
+                                        disabled="@load(vm.pageSize eq 100)"
+                                        sclass="page-size-btn" />
+                            </hbox>
+                        </hbox>
+                    </div>
+
+                    <!-- Controlli paginazione superiori -->
+                    <div style="padding:10px; background:#f8f9fa; border-bottom:1px solid #ddd;">
+                        <hbox align="center" pack="justify" width="100%">
+                            <label value="@load(vm.recordInfo)"
+                                   style="font-size:12px; color:#666;" />
+                            
+                            <hbox spacing="5px">
+                                <button label="«" onClick="@command('firstPage')" 
+                                        disabled="@load(vm.firstPage)"
+                                        sclass="pagination-btn" 
+                                        tooltiptext="Prima pagina" />
+                                <button label="‹" onClick="@command('previousPage')" 
+                                        disabled="@load(vm.firstPage)"
+                                        sclass="pagination-btn" 
+                                        tooltiptext="Pagina precedente" />
+                                <label value="@load(vm.pageInfo)"
+                                       style="font-size:12px; padding:0 10px; line-height:30px;" />
+                                <button label="›" onClick="@command('nextPage')" 
+                                        disabled="@load(vm.lastPage)"
+                                        sclass="pagination-btn" 
+                                        tooltiptext="Pagina successiva" />
+                                <button label="»" onClick="@command('lastPage')" 
+                                        disabled="@load(vm.lastPage)"
+                                        sclass="pagination-btn" 
+                                        tooltiptext="Ultima pagina" />
+                            </hbox>
+                        </hbox>
+                    </div>
+
+                    <div id="tableScrollWrapper"
+                         sclass="table-scroll-wrapper"
+                         style="max-height:550px; overflow-y:auto;">
+
+                        <grid id="gridProfili"
+                              model="@bind(vm.filteredProfiles)"
+                              emptyMessage="Nessun record trovato"
+                              selection="@bind(vm.selectedProfile)"
+                              sclass="wide-grid"
+                              width="100%">
+
+                            <columns sizable="false">
+                                <column label="Target" width="20%" style="background-color:#7b002c; color:white;"/>
+                                <column label="Ent_code" width="15%" style="background-color:#7b002c; color:white;"/>
+                                <column label="Ent_value" width="15%" style="background-color:#7b002c; color:white;"/>
+                                <column label="Gruppo" width="25%" style="background-color:#7b002c; color:white;"/>
+                                <column label="APM" width="15%" style="background-color:#7b002c; color:white;"/>
+                                <column label="Azioni" width="10%" style="background-color:#7b002c; color:white;"/>
+                            </columns>
+
+                            <template name="model">
+                                <row onClick="@command('openDetails', entCode=each.entCode)"
+                                     style="cursor:pointer;"
+                                     tooltiptext="Clicca per vedere i dettagli">
+                                    <label value="@load(each.target)" />
+                                    <label value="@load(each.entCode)" />
+                                    <label value="@load(each.entValue)" />
+                                    <label value="@load(each.gruppo)" />
+                                    <label value="@load(each.apm)" />
+
+                                    <hbox spacing="10px" align="center" onClick="event.stopPropagation();">
+                                        <!-- Icona Modifica -->
+                                        <image src="/images/edit-4.png"
+                                               height="24px"
+                                               onClick="@command('openEdit', entCode=each.entCode)"
+                                               style="cursor:pointer;"
+                                               tooltiptext="Modifica profilo" />
+                                        
+                                        <!-- Icona Elimina -->
+                                        <image src="/images/trash2.png"
+                                               height="24px"
+                                               onClick="@command('confirmAndExecute',
+                                                                 message='Sei sicuro di voler eliminare questo profilo?',
+                                                                 commandName='deleteProfile',
+                                                                 param=each)"
+                                               style="cursor:pointer;"
+                                               tooltiptext="Elimina profilo" />
+                                    </hbox>
+                                </row>
+                            </template>
+
+                        </grid>
+                    </div>
+
+                    <!-- Controlli paginazione inferiori -->
+                    <div style="padding:10px; background:#f8f9fa; border-top:1px solid #ddd;">
+                        <hbox align="center" pack="center" width="100%" spacing="5px">
+                            <button label="«" onClick="@command('firstPage')" 
+                                    disabled="@load(vm.firstPage)"
+                                    sclass="pagination-btn" />
+                            <button label="‹" onClick="@command('previousPage')" 
+                                    disabled="@load(vm.firstPage)"
+                                    sclass="pagination-btn" />
+                            <label value="@load(vm.pageInfo)"
+                                   style="font-size:12px; padding:0 15px; line-height:30px; font-weight:bold;" />
+                            <button label="›" onClick="@command('nextPage')" 
+                                    disabled="@load(vm.lastPage)"
+                                    sclass="pagination-btn" />
+                            <button label="»" onClick="@command('lastPage')" 
+                                    disabled="@load(vm.lastPage)"
+                                    sclass="pagination-btn" />
+                        </hbox>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </window>
+</zk>
