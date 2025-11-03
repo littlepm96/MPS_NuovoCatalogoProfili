@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class HomeViewModel {
+public class ProfiliViewModel {
 
     private ProfileService profileService = new ProfileService();
 
@@ -34,7 +34,7 @@ public class HomeViewModel {
     // =========================
     // COSTRUTTORE: CARICA TUTTI I PROFILI
     // =========================
-    public HomeViewModel() {
+    public ProfiliViewModel() {
         loadProfiles();
     }
 
