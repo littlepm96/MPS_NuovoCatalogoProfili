@@ -23,7 +23,7 @@
 
             <!-- Sidebar -->
             <div sclass="sidebar">
-                <button label="Home" onClick='Executions.sendRedirect("home.zul")' />
+               
                 <button label="Profili" onClick='Executions.sendRedirect("profili.zul")' />
                 <button label="Aggregati" onClick='Executions.sendRedirect("aggregati.zul")' />
             </div>

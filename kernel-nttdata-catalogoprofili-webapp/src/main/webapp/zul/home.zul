@@ -24,10 +24,6 @@
 
             <!-- Sidebar -->
             <div sclass="sidebar">
-                <button label="Home" 
-                        onClick='Executions.sendRedirect("home.zul")'
-                        style="width:100%; margin-bottom:12px; background-color:#7b002c; color:white;
-                               border:none; padding:10px; border-radius:6px; cursor:pointer;" />
                 <button label="Profili" 
                         onClick='Executions.sendRedirect("profili.zul")'
                         style="width:100%; margin-bottom:12px; background-color:#7b002c; color:white;
