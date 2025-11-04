@@ -22,7 +22,7 @@
             <!-- Sidebar -->
             <div sclass="sidebar">
                 <button label="Profili" onClick='Executions.sendRedirect("profili.zul")' />
-                <button label="Aggregati" onClick='Executions.sendRedirect("aggregati.zul")' />
+                <button label="Aggregati" onClick='Executions.sendRedirect("aggregati.zul")'  style="background-color:#6c757d; color:white;" />
             </div>
             
             <!-- Contenuto principale -->
