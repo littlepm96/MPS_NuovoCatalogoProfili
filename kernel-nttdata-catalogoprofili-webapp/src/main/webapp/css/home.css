@@ -227,12 +227,5 @@ body {
     transform: scale(1.1);
 }
 
-.sidebar button.active {
-    background-color: #6c757d;
-    color: white;
-    border: none;
-    padding: 5px 15px;
-    border-radius: 4px;
-    font-weight: 500;
-}
+
 
