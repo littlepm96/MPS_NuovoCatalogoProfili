@@ -1,0 +1,108 @@
+<?page title="Conferma azione" contentType="text/html;charset=UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+	<window border="normal" closable="false" width="420px"
+		viewModel="@id('vm') @init('com.nttdata.viewmodel.PopUpConfermaViewModel')"
+		apply="org.zkoss.bind.BindComposer"
+		sclass="confirm-popup"
+		mode="modal"
+		position="center,center">
+
+		<style>
+			.confirm-popup {
+				background-color: #fff;
+				border-radius: 10px;
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+				padding: 25px 30px;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				text-align: center;
+			}
+
+			.confirm-title {
+				font-size: 18px;
+				font-weight: bold;
+				color: #7b002c;
+				margin-bottom: 12px;
+				text-align: center;
+				width: 100%;
+			}
+
+			.confirm-message {
+				font-size: 15px;
+				color: #333;
+				margin-bottom: 25px;
+				text-align: center;
+				width: 100%;
+				line-height: 1.5;
+			}
+
+			.confirm-buttons {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				gap: 15px;
+				width: 100%;
+			}
+
+			.confirm-btn {
+				padding: 8px 22px;
+				border-radius: 5px;
+				font-weight: 500;
+				color: white;
+				border: none;
+				cursor: pointer;
+				transition: all 0.2s ease;
+				outline: none !important;
+				box-shadow: none !important;
+				text-align: center;
+			}
+
+			/* 🔴 Bottone principale (Conferma) */
+			.confirm-btn-ok {
+				background-color: #7b002c !important;
+			}
+
+			.confirm-btn-ok:hover,
+			.confirm-btn-ok:focus,
+			.confirm-btn-ok:active {
+				background-color: #a00038 !important;
+				color: white !important;
+				box-shadow: none !important;
+			}
+
+			/* ⚫ Bottone secondario (Annulla) */
+			.confirm-btn-cancel {
+				background-color: #6c757d !important;
+			}
+
+			.confirm-btn-cancel:hover,
+			.confirm-btn-cancel:focus,
+			.confirm-btn-cancel:active {
+				background-color: #868e96 !important;
+				color: white !important;
+				box-shadow: none !important;
+			}
+
+			/* Leggero effetto hover */
+			.confirm-btn:hover {
+				transform: scale(1.05);
+			}
+		</style>
+
+		<vbox align="center" pack="center" width="100%" spacing="20px">
+			<label value="Conferma azione" sclass="confirm-title" />
+			<label value="@load(vm.message)" sclass="confirm-message" />
+
+			<hbox sclass="confirm-buttons" pack="center" align="center">
+				<button label="Conferma"
+					onClick="@command('confirm')"
+					sclass="confirm-btn confirm-btn-ok" />
+				<button label="Annulla"
+					onClick="@command('cancel')"
+					sclass="confirm-btn confirm-btn-cancel" />
+			</hbox>
+		</vbox>
+	</window>
+</zk>

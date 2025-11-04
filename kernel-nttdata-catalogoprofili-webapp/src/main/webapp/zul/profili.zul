@@ -168,7 +168,7 @@
 										<!-- Icona Elimina -->
 										<image src="/images/trash2.png"
 											height="24px"
-											onClick="@command('confirmAndExecute',
+											onClick="@command('confirmAndExecuteProfile',
                                                                  message='Sei sicuro di voler eliminare questo profilo?',
                                                                  commandName='deleteProfile',
                                                                  param=each)"
@@ -207,3 +207,4 @@
 
 	</window>
 </zk>
+ 

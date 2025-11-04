@@ -15,375 +15,379 @@ import java.util.stream.Collectors;
 
 public class ProfiliViewModel {
 
-    private ProfileService profileService = new ProfileService();
+	private ProfileService profileService = new ProfileService();
 
-    private List<Profile> allProfiles;               // Lista originale dal DB (NON modificare)
-    private List<Profile> workingProfiles;           // Lista di lavoro per i filtri
-    private ListModelList<Profile> filteredProfiles; // Profili filtrati da mostrare nella grid
-    private Profile selectedProfile;                 // Profilo selezionato
-    private String searchText;                       // Testo della ricerca
-    private String searchColumn = "Tutti";           // Colonna selezionata per la ricerca
-    private String messaggio = "Benvenuto nella gestione profili";
-    
-    // Variabili per paginazione
-    private int pageSize = 10;                       // Righe per pagina (default 10)
-    private int currentPage = 0;                     // Pagina corrente (0-based)
-    private int totalRecords = 0;                    // Totale record
-    private int totalPages = 0;                      // Totale pagine
+	private List<Profile> allProfiles; // Lista originale dal DB (NON modificare)
+	private List<Profile> workingProfiles; // Lista di lavoro per i filtri
+	private ListModelList<Profile> filteredProfiles; // Profili filtrati da mostrare nella grid
+	private Profile selectedProfile; // Profilo selezionato
+	private String searchText; // Testo della ricerca
+	private String searchColumn = "Tutti"; // Colonna selezionata per la ricerca
+	private String messaggio = "Benvenuto nella gestione profili";
 
-    // =========================
-    // COSTRUTTORE: CARICA TUTTI I PROFILI
-    // =========================
-    public ProfiliViewModel() {
-        loadProfiles();
-    }
+	// Variabili per paginazione
+	private int pageSize = 10; // Righe per pagina (default 10)
+	private int currentPage = 0; // Pagina corrente (0-based)
+	private int totalRecords = 0; // Totale record
+	private int totalPages = 0; // Totale pagine
 
-    // =========================
-    // CARICA TUTTI I PROFILI DAL DB
-    // =========================
-    @Command
-    @NotifyChange({"filteredProfiles", "totalRecords", "totalPages", "currentPage", "recordInfo", "pageInfo"})
-    public void loadProfiles() {
-        allProfiles = profileService.getAllProfiles();
-        
-        if (allProfiles != null && !allProfiles.isEmpty()) {
-            workingProfiles = new ArrayList<>(allProfiles); // Copia mutabile
-            totalRecords = workingProfiles.size();
-            calculateTotalPages();
-            updatePagedList();
-        } else {
-            allProfiles = new ArrayList<>();
-            workingProfiles = new ArrayList<>();
-            filteredProfiles = new ListModelList<>();
-            totalRecords = 0;
-            totalPages = 0;
-        }
-        currentPage = 0;
-    }
+	// =========================
+	// COSTRUTTORE: CARICA TUTTI I PROFILI
+	// =========================
+	public ProfiliViewModel() {
+		loadProfiles();
+	}
 
-    // =========================
-    // AGGIORNA LA LISTA PAGINATA
-    // =========================
-    private void updatePagedList() {
-        if (workingProfiles == null || workingProfiles.isEmpty()) {
-            filteredProfiles = new ListModelList<>();
-            return;
-        }
-        
-        int fromIndex = currentPage * pageSize;
-        int toIndex = Math.min(fromIndex + pageSize, totalRecords);
-        
-        filteredProfiles = new ListModelList<>(workingProfiles.subList(fromIndex, toIndex));
-    }
+	// =========================
+	// CARICA TUTTI I PROFILI DAL DB
+	// =========================
+	@Command
+	@NotifyChange({ "filteredProfiles", "totalRecords", "totalPages", "currentPage", "recordInfo", "pageInfo" })
+	public void loadProfiles() {
+		allProfiles = profileService.getAllProfiles();
 
-    // =========================
-    // CALCOLA TOTALE PAGINE
-    // =========================
-    private void calculateTotalPages() {
-        totalPages = (int) Math.ceil((double) totalRecords / pageSize);
-        if (totalPages == 0) totalPages = 1;
-    }
+		if (allProfiles != null && !allProfiles.isEmpty()) {
+			workingProfiles = new ArrayList<>(allProfiles); // Copia mutabile
+			totalRecords = workingProfiles.size();
+			calculateTotalPages();
+			updatePagedList();
+		} else {
+			allProfiles = new ArrayList<>();
+			workingProfiles = new ArrayList<>();
+			filteredProfiles = new ListModelList<>();
+			totalRecords = 0;
+			totalPages = 0;
+		}
+		currentPage = 0;
+	}
 
-    // =========================
-    // FILTRA PROFILI IN BASE AL TESTO DI RICERCA E COLONNA SELEZIONATA
-    // =========================
-    @Command
-    @NotifyChange({"filteredProfiles", "totalRecords", "totalPages", "currentPage", "recordInfo", "pageInfo"})
-    public void filterProfiles() {
-        if (allProfiles == null || allProfiles.isEmpty()) {
-            workingProfiles = new ArrayList<>();
-            totalRecords = 0;
-            currentPage = 0;
-            calculateTotalPages();
-            updatePagedList();
-            return;
-        }
+	// =========================
+	// AGGIORNA LA LISTA PAGINATA
+	// =========================
+	private void updatePagedList() {
+		if (workingProfiles == null || workingProfiles.isEmpty()) {
+			filteredProfiles = new ListModelList<>();
+			return;
+		}
 
-        String lowerSearch = (searchText != null) ? searchText.toLowerCase().trim() : "";
+		int fromIndex = currentPage * pageSize;
+		int toIndex = Math.min(fromIndex + pageSize, totalRecords);
 
-        // Se il campo di ricerca è vuoto, mostra tutti i profili
-        if (lowerSearch.isEmpty()) {
-            workingProfiles = new ArrayList<>(allProfiles);
-            totalRecords = workingProfiles.size();
-            currentPage = 0;
-            calculateTotalPages();
-            updatePagedList();
-            return;
-        }
+		filteredProfiles = new ListModelList<>(workingProfiles.subList(fromIndex, toIndex));
+	}
 
-        // Filtra in base alla colonna selezionata
-        List<Profile> result;
+	// =========================
+	// CALCOLA TOTALE PAGINE
+	// =========================
+	private void calculateTotalPages() {
+		totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+		if (totalPages == 0)
+			totalPages = 1;
+	}
 
-        switch (searchColumn) {
-            case "Target":
-                result = allProfiles.stream()
-                    .filter(p -> p.getTarget() != null && p.getTarget().toLowerCase().contains(lowerSearch))
-                    .collect(Collectors.toList());
-                break;
-            case "Ent_code":
-                result = allProfiles.stream()
-                    .filter(p -> p.getEntCode() != null && p.getEntCode().toLowerCase().contains(lowerSearch))
-                    .collect(Collectors.toList());
-                break;
-            case "Ent_value":
-                result = allProfiles.stream()
-                    .filter(p -> p.getEntValue() != null && p.getEntValue().toLowerCase().contains(lowerSearch))
-                    .collect(Collectors.toList());
-                break;
-            case "Gruppo":
-                result = allProfiles.stream()
-                    .filter(p -> p.getGruppo() != null && p.getGruppo().toLowerCase().contains(lowerSearch))
-                    .collect(Collectors.toList());
-                break;
-            case "APM":
-                result = allProfiles.stream()
-                    .filter(p -> p.getApm() != null && p.getApm().toLowerCase().contains(lowerSearch))
-                    .collect(Collectors.toList());
-                break;
-            default: // "Tutti"
-                result = allProfiles.stream()
-                    .filter(p -> (p.getTarget() != null && p.getTarget().toLowerCase().contains(lowerSearch)) ||
-                                 (p.getEntCode() != null && p.getEntCode().toLowerCase().contains(lowerSearch)) ||
-                                 (p.getEntValue() != null && p.getEntValue().toLowerCase().contains(lowerSearch)) ||
-                                 (p.getGruppo() != null && p.getGruppo().toLowerCase().contains(lowerSearch)) ||
-                                 (p.getApm() != null && p.getApm().toLowerCase().contains(lowerSearch)))
-                    .collect(Collectors.toList());
-                break;
-        }
+	// =========================
+	// FILTRA PROFILI IN BASE AL TESTO DI RICERCA E COLONNA SELEZIONATA
+	// =========================
+	@Command
+	@NotifyChange({ "filteredProfiles", "totalRecords", "totalPages", "currentPage", "recordInfo", "pageInfo" })
+	public void filterProfiles() {
+		if (allProfiles == null || allProfiles.isEmpty()) {
+			workingProfiles = new ArrayList<>();
+			totalRecords = 0;
+			currentPage = 0;
+			calculateTotalPages();
+			updatePagedList();
+			return;
+		}
 
-        workingProfiles = result;
-        totalRecords = result.size();
-        currentPage = 0;
-        calculateTotalPages();
-        updatePagedList();
-    }
+		String lowerSearch = (searchText != null) ? searchText.toLowerCase().trim() : "";
 
-    // =========================
-    // PULISCE IL CAMPO DI RICERCA E MOSTRA TUTTI I PROFILI
-    // =========================
-    @Command
-    @NotifyChange({"filteredProfiles", "searchText", "searchColumn", "totalRecords", "totalPages", "currentPage", "recordInfo", "pageInfo"})
-    public void clearSearch() {
-        searchText = "";
-        searchColumn = "Tutti";
-        
-        // Ripristina la lista di lavoro dalla lista originale
-        if (allProfiles != null && !allProfiles.isEmpty()) {
-            workingProfiles = new ArrayList<>(allProfiles);
-            totalRecords = workingProfiles.size();
-        } else {
-            workingProfiles = new ArrayList<>();
-            totalRecords = 0;
-        }
-        
-        currentPage = 0;
-        calculateTotalPages();
-        updatePagedList();
-    }
+		// Se il campo di ricerca è vuoto, mostra tutti i profili
+		if (lowerSearch.isEmpty()) {
+			workingProfiles = new ArrayList<>(allProfiles);
+			totalRecords = workingProfiles.size();
+			currentPage = 0;
+			calculateTotalPages();
+			updatePagedList();
+			return;
+		}
 
-    // =========================
-    // CAMBIA DIMENSIONE PAGINA
-    // =========================
-    @Command
-    @NotifyChange({"filteredProfiles", "totalPages", "currentPage", "pageSize", "recordInfo", "pageInfo"})
-    public void changePageSize(@org.zkoss.bind.annotation.BindingParam("size") int size) {
-        pageSize = size;
-        currentPage = 0;
-        calculateTotalPages();
-        updatePagedList();
-    }
+		// Filtra in base alla colonna selezionata
+		List<Profile> result;
 
-    // =========================
-    // NAVIGAZIONE PAGINAZIONE
-    // =========================
-    @Command
-    @NotifyChange({"filteredProfiles", "currentPage", "recordInfo", "pageInfo", "firstPage", "lastPage"})
-    public void firstPage() {
-        currentPage = 0;
-        updatePagedList();
-    }
+		switch (searchColumn) {
+		case "Target":
+			result = allProfiles.stream()
+					.filter(p -> p.getTarget() != null && p.getTarget().toLowerCase().contains(lowerSearch))
+					.collect(Collectors.toList());
+			break;
+		case "Ent_code":
+			result = allProfiles.stream()
+					.filter(p -> p.getEntCode() != null && p.getEntCode().toLowerCase().contains(lowerSearch))
+					.collect(Collectors.toList());
+			break;
+		case "Ent_value":
+			result = allProfiles.stream()
+					.filter(p -> p.getEntValue() != null && p.getEntValue().toLowerCase().contains(lowerSearch))
+					.collect(Collectors.toList());
+			break;
+		case "Gruppo":
+			result = allProfiles.stream()
+					.filter(p -> p.getGruppo() != null && p.getGruppo().toLowerCase().contains(lowerSearch))
+					.collect(Collectors.toList());
+			break;
+		case "APM":
+			result = allProfiles.stream()
+					.filter(p -> p.getApm() != null && p.getApm().toLowerCase().contains(lowerSearch))
+					.collect(Collectors.toList());
+			break;
+		default: // "Tutti"
+			result = allProfiles.stream()
+					.filter(p -> (p.getTarget() != null && p.getTarget().toLowerCase().contains(lowerSearch))
+							|| (p.getEntCode() != null && p.getEntCode().toLowerCase().contains(lowerSearch))
+							|| (p.getEntValue() != null && p.getEntValue().toLowerCase().contains(lowerSearch))
+							|| (p.getGruppo() != null && p.getGruppo().toLowerCase().contains(lowerSearch))
+							|| (p.getApm() != null && p.getApm().toLowerCase().contains(lowerSearch)))
+					.collect(Collectors.toList());
+			break;
+		}
 
-    @Command
-    @NotifyChange({"filteredProfiles", "currentPage", "recordInfo", "pageInfo", "firstPage", "lastPage"})
-    public void previousPage() {
-        if (currentPage > 0) {
-            currentPage--;
-            updatePagedList();
-        }
-    }
+		workingProfiles = result;
+		totalRecords = result.size();
+		currentPage = 0;
+		calculateTotalPages();
+		updatePagedList();
+	}
 
-    @Command
-    @NotifyChange({"filteredProfiles", "currentPage", "recordInfo", "pageInfo", "firstPage", "lastPage"})
-    public void nextPage() {
-        if (currentPage < totalPages - 1) {
-            currentPage++;
-            updatePagedList();
-        }
-    }
+	// =========================
+	// PULISCE IL CAMPO DI RICERCA E MOSTRA TUTTI I PROFILI
+	// =========================
+	@Command
+	@NotifyChange({ "filteredProfiles", "searchText", "searchColumn", "totalRecords", "totalPages", "currentPage",
+			"recordInfo", "pageInfo" })
+	public void clearSearch() {
+		searchText = "";
+		searchColumn = "Tutti";
 
-    @Command
-    @NotifyChange({"filteredProfiles", "currentPage", "recordInfo", "pageInfo", "firstPage", "lastPage"})
-    public void lastPage() {
-        currentPage = totalPages - 1;
-        updatePagedList();
-    }
+		// Ripristina la lista di lavoro dalla lista originale
+		if (allProfiles != null && !allProfiles.isEmpty()) {
+			workingProfiles = new ArrayList<>(allProfiles);
+			totalRecords = workingProfiles.size();
+		} else {
+			workingProfiles = new ArrayList<>();
+			totalRecords = 0;
+		}
 
-    // =========================
-    // AZIONI SUI PROFILI
-    // =========================
-    
-    /**
-     * Apre la pagina di modifica del profilo
-     */
-    @Command
-    public void openEdit(@BindingParam("entCode") String entCode) {
-        if (entCode != null && !entCode.isEmpty()) {
-            Executions.sendRedirect("modificaProfilo.zul?entCode=" + entCode);
-        } else {
-            Clients.showNotification("Codice ENT_CODE non valido!", "error", null, "middle_center", 2000);
-        }
-    }
+		currentPage = 0;
+		calculateTotalPages();
+		updatePagedList();
+	}
 
-    /**
-     * Apre la pagina dei dettagli del profilo
-     */
-    @Command
-    public void openDetails(@BindingParam("entCode") String entCode) {
-        if (entCode != null && !entCode.isEmpty()) {
-            Executions.sendRedirect("dettagliProfilo.zul?entCode=" + entCode);
-        } else {
-            Clients.showNotification("Codice ENT_CODE non valido!", "error", null, "middle_center", 2000);
-        }
-    }
+	// =========================
+	// CAMBIA DIMENSIONE PAGINA
+	// =========================
+	@Command
+	@NotifyChange({ "filteredProfiles", "totalPages", "currentPage", "pageSize", "recordInfo", "pageInfo" })
+	public void changePageSize(@org.zkoss.bind.annotation.BindingParam("size") int size) {
+		pageSize = size;
+		currentPage = 0;
+		calculateTotalPages();
+		updatePagedList();
+	}
 
-    /**
-     * Elimina un profilo dopo conferma
-     */
-    @Command
-    @NotifyChange({"filteredProfiles", "totalRecords", "totalPages", "currentPage", "recordInfo", "pageInfo"})
-    public void deleteProfile(@BindingParam("param") Profile profile) {
-        if (profile == null || profile.getEntCode() == null) {
-            Clients.showNotification("Profilo non valido!", "error", null, "middle_center", 2000);
-            return;
-        }
+	// =========================
+	// NAVIGAZIONE PAGINAZIONE
+	// =========================
+	@Command
+	@NotifyChange({ "filteredProfiles", "currentPage", "recordInfo", "pageInfo", "firstPage", "lastPage" })
+	public void firstPage() {
+		currentPage = 0;
+		updatePagedList();
+	}
 
-        try {
-            boolean success = profileService.deleteProfile(profile.getEntCode());
-            
-            if (success) {
-                Clients.showNotification("Profilo eliminato con successo!", "info", null, "middle_center", 2000);
-                
-                // Ricarica i dati dopo l'eliminazione
-                loadProfiles();
-            } else {
-                Clients.showNotification("Errore durante l'eliminazione del profilo!", "error", null, "middle_center", 2500);
-            }
-        } catch (Exception e) {
-            Clients.showNotification("Errore: " + e.getMessage(), "error", null, "middle_center", 3000);
-            e.printStackTrace();
-        }
-    }
+	@Command
+	@NotifyChange({ "filteredProfiles", "currentPage", "recordInfo", "pageInfo", "firstPage", "lastPage" })
+	public void previousPage() {
+		if (currentPage > 0) {
+			currentPage--;
+			updatePagedList();
+		}
+	}
 
-    /**
-     * Mostra una finestra di conferma prima di eseguire un comando
-     */
-    @Command
-    public void confirmAndExecute(@BindingParam("message") String message,
-                                   @BindingParam("commandName") String commandName,
-                                   @BindingParam("param") Profile param) {
-        
-        // Mostra la conferma usando ZK Messagebox
-        org.zkoss.zul.Messagebox.show(
-            message,
-            "Conferma",
-            org.zkoss.zul.Messagebox.YES | org.zkoss.zul.Messagebox.NO,
-            org.zkoss.zul.Messagebox.QUESTION,
-            event -> {
-                if (event.getName().equals("onYes")) {
-                    // Esegue il comando se l'utente conferma
-                    if ("deleteProfile".equals(commandName)) {
-                        deleteProfile(param);
-                    }
-                }
-            }
-        );
-    }
+	@Command
+	@NotifyChange({ "filteredProfiles", "currentPage", "recordInfo", "pageInfo", "firstPage", "lastPage" })
+	public void nextPage() {
+		if (currentPage < totalPages - 1) {
+			currentPage++;
+			updatePagedList();
+		}
+	}
 
-    // =========================
-    // GETTER E SETTER
-    // =========================
-    public ListModelList<Profile> getFilteredProfiles() {
-        return filteredProfiles;
-    }
+	@Command
+	@NotifyChange({ "filteredProfiles", "currentPage", "recordInfo", "pageInfo", "firstPage", "lastPage" })
+	public void lastPage() {
+		currentPage = totalPages - 1;
+		updatePagedList();
+	}
 
-    public Profile getSelectedProfile() {
-        return selectedProfile;
-    }
+	// =========================
+	// AZIONI SUI PROFILI
+	// =========================
 
-    public void setSelectedProfile(Profile selectedProfile) {
-        this.selectedProfile = selectedProfile;
-    }
+	/**
+	 * Apre la pagina di modifica del profilo
+	 */
+	@Command
+	public void openEdit(@BindingParam("entCode") String entCode) {
+		if (entCode != null && !entCode.isEmpty()) {
+			Executions.sendRedirect("modificaProfilo.zul?entCode=" + entCode);
+		} else {
+			Clients.showNotification("Codice ENT_CODE non valido!", "error", null, "middle_center", 2000);
+		}
+	}
 
-    public String getSearchText() {
-        return searchText;
-    }
+	/**
+	 * Apre la pagina dei dettagli del profilo
+	 */
+	@Command
+	public void openDetails(@BindingParam("entCode") String entCode) {
+		if (entCode != null && !entCode.isEmpty()) {
+			Executions.sendRedirect("dettagliProfilo.zul?entCode=" + entCode);
+		} else {
+			Clients.showNotification("Codice ENT_CODE non valido!", "error", null, "middle_center", 2000);
+		}
+	}
 
-    public void setSearchText(String searchText) {
-        this.searchText = searchText;
-    }
+	/**
+	 * Elimina un profilo dopo conferma
+	 */
+	@Command
+	@NotifyChange({ "filteredProfiles", "totalRecords", "totalPages", "currentPage", "recordInfo", "pageInfo" })
+	public void deleteProfile(@BindingParam("param") Profile profile) {
+		if (profile == null || profile.getEntCode() == null) {
+			Clients.showNotification("Profilo non valido!", "error", null, "middle_center", 2000);
+			return;
+		}
 
-    public String getMessaggio() {
-        return messaggio;
-    }
+		try {
+			boolean success = profileService.deleteProfile(profile.getEntCode());
 
-    public int getPageSize() {
-        return pageSize;
-    }
+			if (success) {
+				Clients.showNotification("Profilo eliminato con successo!", "info", null, "middle_center", 2000);
 
-    public int getCurrentPage() {
-        return currentPage;
-    }
+				// Ricarica i dati dopo l'eliminazione
+				loadProfiles();
+			} else {
+				Clients.showNotification("Errore durante l'eliminazione del profilo!", "error", null, "middle_center",
+						2500);
+			}
+		} catch (Exception e) {
+			Clients.showNotification("Errore: " + e.getMessage(), "error", null, "middle_center", 3000);
+			e.printStackTrace();
+		}
+	}
 
-    public int getTotalRecords() {
-        return totalRecords;
-    }
+	/**
+	 * Mostra una finestra di conferma prima di eseguire un comando
+	 */
+	@Command
+	public void confirmAndExecuteProfile(@BindingParam("message") String message,
+	                              @BindingParam("commandName") String commandName,
+	                              @BindingParam("param") Profile param) {
 
-    public int getTotalPages() {
-        return totalPages;
-    }
-    
-    public int getFromRecord() {
-        return totalRecords == 0 ? 0 : (currentPage * pageSize) + 1;
-    }
-    
-    public int getToRecord() {
-        return Math.min((currentPage + 1) * pageSize, totalRecords);
-    }
-    
-    public boolean isFirstPage() {
-        return currentPage == 0;
-    }
-    
-    public boolean isLastPage() {
-        return currentPage >= totalPages - 1;
-    }
-    
-    // =========================
-    // STRINGHE FORMATTATE PER LA PAGINAZIONE
-    // =========================
-    public String getRecordInfo() {
-        return getFromRecord() + " - " + getToRecord() + " di " + totalRecords + " record";
-    }
-    
-    public String getPageInfo() {
-        return "Pagina " + (currentPage + 1) + " di " + totalPages;
-    }
+	    // Imposta il riferimento al ViewModel principale nel desktop
+	    Executions.getCurrent().getDesktop().setAttribute("mainVM", this);
 
-    public String getSearchColumn() {
-        return searchColumn;
-    }
+	    // Crea e mostra il popup personalizzato
+	    org.zkoss.zul.Window window = 
+	            (org.zkoss.zul.Window) Executions.createComponents(
+	                    "/zul/popUpConferma.zul", null,
+	                    java.util.Map.of(
+	                            "message", message,
+	                            "commandName", commandName,
+	                            "param", param
+	                    )
+	            );
+	    window.doModal();
+	}
 
-    public void setSearchColumn(String searchColumn) {
-        this.searchColumn = searchColumn;
-    }
+
+
+	// =========================
+	// GETTER E SETTER
+	// =========================
+	public ListModelList<Profile> getFilteredProfiles() {
+		return filteredProfiles;
+	}
+
+	public Profile getSelectedProfile() {
+		return selectedProfile;
+	}
+
+	public void setSelectedProfile(Profile selectedProfile) {
+		this.selectedProfile = selectedProfile;
+	}
+
+	public String getSearchText() {
+		return searchText;
+	}
+
+	public void setSearchText(String searchText) {
+		this.searchText = searchText;
+	}
+
+	public String getMessaggio() {
+		return messaggio;
+	}
+
+	public int getPageSize() {
+		return pageSize;
+	}
+
+	public int getCurrentPage() {
+		return currentPage;
+	}
+
+	public int getTotalRecords() {
+		return totalRecords;
+	}
+
+	public int getTotalPages() {
+		return totalPages;
+	}
+
+	public int getFromRecord() {
+		return totalRecords == 0 ? 0 : (currentPage * pageSize) + 1;
+	}
+
+	public int getToRecord() {
+		return Math.min((currentPage + 1) * pageSize, totalRecords);
+	}
+
+	public boolean isFirstPage() {
+		return currentPage == 0;
+	}
+
+	public boolean isLastPage() {
+		return currentPage >= totalPages - 1;
+	}
+
+	// =========================
+	// STRINGHE FORMATTATE PER LA PAGINAZIONE
+	// =========================
+	public String getRecordInfo() {
+		return getFromRecord() + " - " + getToRecord() + " di " + totalRecords + " record";
+	}
+
+	public String getPageInfo() {
+		return "Pagina " + (currentPage + 1) + " di " + totalPages;
+	}
+
+	public String getSearchColumn() {
+		return searchColumn;
+	}
+
+	public void setSearchColumn(String searchColumn) {
+		this.searchColumn = searchColumn;
+	}
 }
