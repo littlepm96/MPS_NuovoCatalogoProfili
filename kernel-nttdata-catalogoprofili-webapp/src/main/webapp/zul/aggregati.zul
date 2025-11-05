@@ -133,11 +133,11 @@
 
 							<template name="model">
 								<row
-									onClick="@command('openDetails', nomeAggregato=each.nomeAggregatoAp)"
+									onClick="@command('openDetails', nomeAggregato=each.nomeAggregato)"
 									style="cursor:pointer;"
 									tooltiptext="Clicca per vedere i dettagli">
 									<label
-										value="@load(each.nomeAggregatoAp)" />
+										value="@load(each.nomeAggregato)" />
 									<label
 										value="@load(each.tipologia)" />
 									<label
@@ -152,7 +152,7 @@
 										<!-- Icona Modifica -->
 										<image src="/images/edit-4.png"
 											height="24px"
-											onClick="@command('openEdit', nomeAggregato=each.nomeAggregatoAp)"
+											onClick="@command('openEdit', nome_aggregato=each.nomeAggregato)"
 											style="cursor:pointer;" tooltiptext="Modifica aggregato" />
 
 										<!-- Icona Elimina -->

@@ -119,7 +119,7 @@ public class AggregatiViewModel {
 		switch (searchColumn) {
 		case "Nome":
 			result = allAggregati.stream().filter(
-					a -> a.getNomeAggregatoAp() != null && a.getNomeAggregatoAp().toLowerCase().contains(lowerSearch))
+					a -> a.getNomeAggregato() != null && a.getNomeAggregato().toLowerCase().contains(lowerSearch))
 					.collect(Collectors.toList());
 			break;
 		case "Tipologia":
@@ -134,7 +134,7 @@ public class AggregatiViewModel {
 			break;
 		default:
 			result = allAggregati.stream().filter(
-					a -> (a.getNomeAggregatoAp() != null && a.getNomeAggregatoAp().toLowerCase().contains(lowerSearch))
+					a -> (a.getNomeAggregato() != null && a.getNomeAggregato().toLowerCase().contains(lowerSearch))
 							|| (a.getTipologia() != null && a.getTipologia().toLowerCase().contains(lowerSearch))
 							|| (a.getDescrizione() != null && a.getDescrizione().toLowerCase().contains(lowerSearch)))
 					.collect(Collectors.toList());
@@ -210,18 +210,18 @@ public class AggregatiViewModel {
 	}
 
 	@Command
-	public void openEdit(@BindingParam("nomeAggregato") String nomeAggregato) {
-		if (nomeAggregato != null && !nomeAggregato.isEmpty()) {
-			Executions.sendRedirect("modificaAggregato.zul?nomeAggregato=" + nomeAggregato);
+	public void openEdit(@BindingParam("nome_aggregato") String nome_aggregato) {
+		if (nome_aggregato != null && !nome_aggregato.isEmpty()) {
+			Executions.sendRedirect("modificaAggregato.zul?nome_aggregato=" + nome_aggregato);
 		} else {
 			Clients.showNotification("Nome aggregato non valido!", "error", null, "middle_center", 2000);
 		}
 	}
 
 	@Command
-	public void openDetails(@BindingParam("nomeAggregato") String nomeAggregato) {
-		if (nomeAggregato != null && !nomeAggregato.isEmpty()) {
-			Executions.sendRedirect("dettagliAggregato.zul?nomeAggregato=" + nomeAggregato);
+	public void openDetails(@BindingParam("nome_aggregato") String nome_aggregato) {
+		if (nome_aggregato != null && !nome_aggregato.isEmpty()) {
+			Executions.sendRedirect("dettagliAggregato.zul?nome_aggregato=" + nome_aggregato);
 		} else {
 			Clients.showNotification("Nome aggregato non valido!", "error", null, "middle_center", 2000);
 		}
@@ -230,13 +230,13 @@ public class AggregatiViewModel {
 	@Command
 	@NotifyChange({ "filteredAggregati", "totalRecords", "totalPages", "currentPage", "recordInfo", "pageInfo" })
 	public void deleteAggregato(@BindingParam("param") Aggregato aggregato) {
-		if (aggregato == null || aggregato.getNomeAggregatoAp() == null) {
+		if (aggregato == null || aggregato.getNomeAggregato() == null) {
 			Clients.showNotification("Aggregato non valido!", "error", null, "middle_center", 2000);
 			return;
 		}
 
 		try {
-			boolean success = aggregatoService.deleteAggregato(aggregato.getNomeAggregatoAp());
+			boolean success = aggregatoService.deleteAggregato(aggregato.getNomeAggregato());
 
 			if (success) {
 				Clients.showNotification("Aggregato eliminato!", "info", null, "middle_center", 2000);
