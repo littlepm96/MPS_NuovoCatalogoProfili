@@ -1,6 +1,7 @@
 package com.nttdata.viewmodel;
 
 import com.nttdata.model.Aggregato;
+import com.nttdata.model.RegolaDettaglio;
 import com.nttdata.service.AggregatoService;
 import org.zkoss.bind.annotation.*;
 import org.zkoss.zk.ui.Executions;
@@ -18,6 +19,7 @@ public class AggregatiViewModel {
 	private List<Aggregato> allAggregati;
 	private List<Aggregato> workingAggregati;
 	private ListModelList<Aggregato> filteredAggregati;
+	private List<RegolaDettaglio> selectedRegole = new ArrayList<>();
 	private Aggregato selectedAggregato;
 	private String searchText;
 	private String searchColumn = "Tutti";
@@ -90,6 +92,19 @@ public class AggregatiViewModel {
 		if (totalPages == 0)
 			totalPages = 1;
 	}
+	
+	@Command
+	@NotifyChange("selectedRegole")
+	public void loadRegole(@BindingParam("nome_aggregato") String nomeAggregato) {
+	    if (nomeAggregato == null || nomeAggregato.isEmpty()) {
+	        selectedRegole.clear();
+	        return;
+	    }
+
+	    selectedRegole = aggregatoService.getRegoleByAggregato(nomeAggregato);
+	    System.out.println("📄 Regole caricate per " + nomeAggregato + ": " + selectedRegole.size());
+	}
+
 
 	@Command
 	@NotifyChange({ "filteredAggregati", "totalRecords", "totalPages", "currentPage", "recordInfo", "pageInfo" })
@@ -336,5 +351,8 @@ public class AggregatiViewModel {
 
 	public void setSearchColumn(String searchColumn) {
 		this.searchColumn = searchColumn;
+	}
+	public List<RegolaDettaglio> getSelectedRegole() {
+	    return selectedRegole;
 	}
 }

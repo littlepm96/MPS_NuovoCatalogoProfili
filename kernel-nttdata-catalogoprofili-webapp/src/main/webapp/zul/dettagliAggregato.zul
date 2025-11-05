@@ -33,17 +33,32 @@
 
                     <label value="@load(vm.messaggio)" style="font-weight:bold; font-size:20px; color:#333;"/>
 
-                    <!-- Mostra tutti i campi -->
+                    <!-- Info Aggregato -->
                     <vlayout spacing="10px" width="100%">
-                        <hlayout spacing="10px" width="100%"><label value="Nome Aggregato:" width="200px"/><textbox value="@load(vm.aggregato.nomeAggregatoAp)" hflex="1" readonly="true"/></hlayout>
+                        <hlayout spacing="10px" width="100%"><label value="Nome Aggregato:" width="200px"/><textbox value="@load(vm.aggregato.nomeAggregato)" hflex="1" readonly="true"/></hlayout>
                         <hlayout spacing="10px" width="100%"><label value="Tipologia:" width="200px"/><textbox value="@load(vm.aggregato.tipologia)" hflex="1" readonly="true"/></hlayout>
                         <hlayout spacing="10px" width="100%"><label value="Descrizione:" width="200px"/><textbox value="@load(vm.aggregato.descrizione)" hflex="1" readonly="true"/></hlayout>
                         <hlayout spacing="10px" width="100%"><label value="Ad Personam:" width="200px"/><textbox value="@load(vm.aggregato.adPersonam)" hflex="1" readonly="true"/></hlayout>
                         <hlayout spacing="10px" width="100%"><label value="Ricertificabile:" width="200px"/><textbox value="@load(vm.aggregato.ricertificabile)" hflex="1" readonly="true"/></hlayout>
                     </vlayout>
 
+                    <!-- Grid Regole -->
+                    <label value="Regole associate:" style="font-weight:bold; margin-top:20px;"/>
+                    <grid model="@bind(vm.regoleAggregato)" emptyMessage="Nessuna regola trovata" width="100%" height="300px">
+                        <columns>
+                            <column label="ID Regola" width="20%"/>
+                            <column label="Contenuto Regola" width="80%"/>
+                        </columns>
+                        <template name="model">
+                            <row>
+                                <label value="@load(each[0])"/>
+                                <textbox value="@load(each[1])" readonly="true" hflex="1" multiline="true"/>
+                            </row>
+                        </template>
+                    </grid>
+
                     <!-- Pulsante home -->
-                    <hlayout spacing="15px" style="justify-content:flex-end; width:100%;">
+                    <hlayout spacing="15px" style="justify-content:flex-end; width:100%; margin-top:20px;">
                         <button label="Torna agli Aggregati" onClick="@command('goBack')"
                                 style="background-color:#7b002c;color:white;border:none;padding:10px 25px;border-radius:5px;font-weight:bold;"/>
                     </hlayout>

@@ -133,7 +133,7 @@
 
 							<template name="model">
 								<row
-									onClick="@command('openDetails', nomeAggregato=each.nomeAggregato)"
+									onClick="@command('openDetails', nome_aggregato=each.nomeAggregato)"
 									style="cursor:pointer;"
 									tooltiptext="Clicca per vedere i dettagli">
 									<label

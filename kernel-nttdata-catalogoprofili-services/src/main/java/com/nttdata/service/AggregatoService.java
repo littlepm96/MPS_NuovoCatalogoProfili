@@ -2,6 +2,7 @@ package com.nttdata.service;
 
 import com.nttdata.config.DatabaseConnection;
 import com.nttdata.model.Aggregato;
+import com.nttdata.model.RegolaDettaglio;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -122,6 +123,39 @@ public class AggregatoService {
  
         return null;
     }
+	
+	public List<RegolaDettaglio> getRegoleByAggregato(String nomeAggregato) {
+	    List<RegolaDettaglio> regole = new ArrayList<>();
+
+	    String sql = """
+	        SELECT a.nome_aggregato, r.id_regola, r.rule_clob
+	        FROM ncp.aggregato a
+	        LEFT JOIN ncp.regole_aggregato ra ON ra.id_aggregato = a.id_aggregato
+	        LEFT JOIN ncp.regola r ON r.id_regola = ra.id_regola
+	        WHERE a.nome_aggregato = ?
+	    """;
+
+	    try (Connection conn = DatabaseConnection.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+	        stmt.setString(1, nomeAggregato);
+	        ResultSet rs = stmt.executeQuery();
+
+	        while (rs.next()) {
+	            String nome = rs.getString("nome_aggregato");
+	            Integer idRegola = rs.getObject("id_regola") != null ? rs.getInt("id_regola") : null;
+	            String ruleClob = rs.getString("rule_clob");
+
+	            regole.add(new RegolaDettaglio(nome, idRegola, ruleClob));
+	        }
+
+	    } catch (SQLException e) {
+	        System.err.println("❌ Errore caricamento regole per aggregato " + nomeAggregato);
+	        e.printStackTrace();
+	    }
+
+	    return regole;
+	}
 
 
 }
