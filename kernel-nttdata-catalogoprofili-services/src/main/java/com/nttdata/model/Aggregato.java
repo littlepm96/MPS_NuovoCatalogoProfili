@@ -3,10 +3,10 @@ package com.nttdata.model;
 public class Aggregato {
 
     // Campi principali (mostrati nella tabella)
-    private String nomeAggregatoAp;
+    private String nome_aggregato;
     private String tipologia;
     private String descrizione;
-    private String adPersonam;
+    private String ad_personam;
     private String ricertificabile;
     
     // Campi aggiuntivi (mostrati solo nei dettagli)
@@ -20,8 +20,8 @@ public class Aggregato {
     public Aggregato() {}
 
     // Getters e Setters per i campi principali
-    public String getNomeAggregatoAp() { return nomeAggregatoAp; }
-    public void setNomeAggregatoAp(String nomeAggregatoAp) { this.nomeAggregatoAp = nomeAggregatoAp; }
+    public String getNomeAggregato() { return nome_aggregato; }
+    public void setNomeAggregato(String nome_aggregato) { this.nome_aggregato = nome_aggregato; }
 
     public String getTipologia() { return tipologia; }
     public void setTipologia(String tipologia) { this.tipologia = tipologia; }
@@ -29,8 +29,8 @@ public class Aggregato {
     public String getDescrizione() { return descrizione; }
     public void setDescrizione(String descrizione) { this.descrizione = descrizione; }
 
-    public String getAdPersonam() { return adPersonam; }
-    public void setAdPersonam(String adPersonam) { this.adPersonam = adPersonam; }
+    public String getAdPersonam() { return ad_personam; }
+    public void setAdPersonam(String ad_personam) { this.ad_personam = ad_personam; }
 
     public String getRicertificabile() { return ricertificabile; }
     public void setRicertificabile(String ricertificabile) { this.ricertificabile = ricertificabile; }
@@ -57,10 +57,10 @@ public class Aggregato {
     @Override
     public String toString() {
         return "Aggregato{" +
-                "nomeAggregatoAp='" + nomeAggregatoAp + '\'' +
+                "nome_aggregato='" + nome_aggregato + '\'' +
                 ", tipologia='" + tipologia + '\'' +
                 ", descrizione='" + descrizione + '\'' +
-                ", adPersonam='" + adPersonam + '\'' +
+                ", ad_personam='" + ad_personam + '\'' +
                 ", ricertificabile='" + ricertificabile + '\'' +
                 '}';
     }

@@ -23,7 +23,6 @@
 
             <!-- Sidebar -->
             <div sclass="sidebar">
-               
                 <button label="Profili" onClick='Executions.sendRedirect("profili.zul")' />
                 <button label="Aggregati" onClick='Executions.sendRedirect("aggregati.zul")' style="background-color:#6c757d; color:white;" />
             </div>
@@ -36,25 +35,52 @@
 
                     <!-- Form modificabile -->
                     <vlayout spacing="10px" width="100%">
-                        <hlayout spacing="10px" width="100%"><label value="Nome Aggregato:" width="200px"/><textbox value="@bind(vm.aggregato.nomeAggregatoAp)" hflex="1" readonly="true" style="background:#f0f0f0;"/></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="Tipologia:" width="200px"/><textbox value="@bind(vm.aggregato.tipologia)" hflex="1"/></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="Descrizione:" width="200px"/><textbox value="@bind(vm.aggregato.descrizione)" hflex="1"/></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="Ad Personam:" width="200px"/><combobox value="@bind(vm.aggregato.adPersonam)" hflex="1">
-                            <comboitem label="SI" value="SI" />
-                            <comboitem label="NO" value="NO" />
-                        </combobox></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="Ricertificabile:" width="200px"/><combobox value="@bind(vm.aggregato.ricertificabile)" hflex="1">
-                            <comboitem label="SI" value="SI" />
-                            <comboitem label="NO" value="NO" />
-                        </combobox></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="Gruppo:" width="200px"/><textbox value="@bind(vm.aggregato.gruppo)" hflex="1"/></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="Responsabile:" width="200px"/><textbox value="@bind(vm.aggregato.responsabile)" hflex="1"/></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="Stato:" width="200px"/><combobox value="@bind(vm.aggregato.stato)" hflex="1">
-                            <comboitem label="ATTIVO" value="ATTIVO" />
-                            <comboitem label="INATTIVO" value="INATTIVO" />
-                            <comboitem label="SOSPESO" value="SOSPESO" />
-                        </combobox></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="Note:" width="200px"/><textbox value="@bind(vm.aggregato.note)" hflex="1" multiline="true" rows="3"/></hlayout>
+                        <hlayout spacing="10px" width="100%">
+                            <label value="Nome Aggregato:" width="200px"/>
+                            <textbox value="@bind(vm.aggregato.nomeAggregato)" hflex="1" readonly="true" style="background:#f0f0f0;"/>
+                        </hlayout>
+                        <hlayout spacing="10px" width="100%">
+                            <label value="Tipologia:" width="200px"/>
+                            <textbox value="@bind(vm.aggregato.tipologia)" hflex="1"/>
+                        </hlayout>
+                        <hlayout spacing="10px" width="100%">
+                            <label value="Descrizione:" width="200px"/>
+                            <textbox value="@bind(vm.aggregato.descrizione)" hflex="1"/>
+                        </hlayout>
+                        <hlayout spacing="10px" width="100%">
+                            <label value="Ad Personam:" width="200px"/>
+                            <combobox value="@bind(vm.aggregato.adPersonam)" hflex="1">
+                                <comboitem label="SI" value="SI" />
+                                <comboitem label="NO" value="NO" />
+                            </combobox>
+                        </hlayout>
+                        <hlayout spacing="10px" width="100%">
+                            <label value="Ricertificabile:" width="200px"/>
+                            <combobox value="@bind(vm.aggregato.ricertificabile)" hflex="1">
+                                <comboitem label="SI" value="SI" />
+                                <comboitem label="NO" value="NO" />
+                            </combobox>
+                        </hlayout>
+                        <hlayout spacing="10px" width="100%">
+                            <label value="Gruppo:" width="200px"/>
+                            <textbox value="@bind(vm.aggregato.gruppo)" hflex="1"/>
+                        </hlayout>
+                        <hlayout spacing="10px" width="100%">
+                            <label value="Responsabile:" width="200px"/>
+                            <textbox value="@bind(vm.aggregato.responsabile)" hflex="1"/>
+                        </hlayout>
+                        <hlayout spacing="10px" width="100%">
+                            <label value="Stato:" width="200px"/>
+                            <combobox value="@bind(vm.aggregato.stato)" hflex="1">
+                                <comboitem label="ATTIVO" value="ATTIVO" />
+                                <comboitem label="INATTIVO" value="INATTIVO" />
+                                <comboitem label="SOSPESO" value="SOSPESO" />
+                            </combobox>
+                        </hlayout>
+                        <hlayout spacing="10px" width="100%">
+                            <label value="Note:" width="200px"/>
+                            <textbox value="@bind(vm.aggregato.note)" hflex="1" multiline="true" rows="3"/>
+                        </hlayout>
                     </vlayout>
 
                     <!-- Pulsanti -->
