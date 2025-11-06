@@ -4,7 +4,6 @@ import com.nttdata.model.Apm;
 import com.nttdata.service.ApmService;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.Command;
-import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.bind.annotation.QueryParam;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.util.Clients;

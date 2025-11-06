@@ -26,9 +26,9 @@
 			<!-- 📁 Sidebar -->
 			<div sclass="sidebar">
 				<button label="Profili"
-					onClick='Executions.sendRedirect("profili.zul")' />
+					onClick='Executions.sendRedirect("profili.zul")' style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;"  />
 				<button label="Aggregati"
-					onClick='Executions.sendRedirect("aggregati.zul")' />
+					onClick='Executions.sendRedirect("aggregati.zul")' style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;"  />
 				<button label="APM"
 					onClick='Executions.sendRedirect("apm.zul")'
 					style="background-color:#7b002c; color:white;" />
