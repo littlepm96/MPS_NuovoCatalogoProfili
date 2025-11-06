@@ -1,0 +1,188 @@
+<?page title="Dettagli APM - Monte dei Paschi di Siena" contentType="text/html;charset=UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+
+	<window width="100%" height="100%"
+		viewModel="@id('vm') @init('com.nttdata.viewmodel.DettagliApmViewModel')"
+		apply="org.zkoss.bind.BindComposer">
+
+		<style src="/css/home.css" />
+
+		<!-- 🔝 Header -->
+		<div sclass="navbar">
+			<hbox>
+				<image id="logoImg" src="/images/logo.png" height="45px"
+					style="margin-right:10px;" />
+			</hbox>
+			<hbox sclass="menu">
+				<a href="home.zul">Home</a>
+				<a href="#">Servizi</a>
+				<a href="#">Contatti</a>
+			</hbox>
+		</div>
+
+		<!-- 🧭 Layout principale -->
+		<div sclass="main-layout">
+
+			<!-- 📁 Sidebar -->
+			<div sclass="sidebar">
+				<button label="Profili"
+					onClick='Executions.sendRedirect("profili.zul")' />
+				<button label="Aggregati"
+					onClick='Executions.sendRedirect("aggregati.zul")' />
+				<button label="APM"
+					onClick='Executions.sendRedirect("apm.zul")'
+					style="background-color:#7b002c; color:white;" />
+				<button label="Target"
+					onClick='Executions.sendRedirect("aggregati.zul")'
+					style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;" />
+				<button label="Azienda"
+					onClick='Executions.sendRedirect("aggregati.zul")'
+					style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;" />
+				<button label="ATS"
+					onClick='Executions.sendRedirect("aggregati.zul")'
+					style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;" />
+			</div>
+
+			<!-- 📋 Contenuto principale -->
+			<div sclass="content-area">
+				<vlayout spacing="15px" width="80%"
+					style="margin:20px auto;">
+
+					<label value="Dettagli Applicazione APM"
+						style="font-weight:bold; font-size:20px; color:#333;" />
+
+					<!-- 📄 Campi dettagli -->
+					<vlayout spacing="10px" width="100%">
+
+						<hlayout spacing="10px" width="100%">
+							<label value="APP:" width="200px" />
+							<textbox value="@load(vm.apm.app)" hflex="1"
+								readonly="true" />
+						</hlayout>
+
+						<hlayout spacing="10px" width="100%">
+							<label value="Descrizione:" width="200px" />
+							<textbox value="@load(vm.apm.descrizione)"
+								hflex="1" readonly="true" />
+						</hlayout>
+
+						<hlayout spacing="10px" width="100%">
+							<label value="Stato:" width="200px" />
+							<textbox value="@load(vm.apm.stato)"
+								hflex="1" readonly="true" />
+						</hlayout>
+
+						<hlayout spacing="10px" width="100%">
+							<label value="Codice Struttura Change:"
+								width="200px" />
+							<textbox
+								value="@load(vm.apm.codStrutturaChange)" hflex="1"
+								readonly="true" />
+						</hlayout>
+
+						<hlayout spacing="10px" width="100%">
+							<label value="Descrizione Struttura Change:"
+								width="200px" />
+							<textbox
+								value="@load(vm.apm.descrStruttChange)" hflex="1"
+								readonly="true" />
+						</hlayout>
+
+						<hlayout spacing="10px" width="100%">
+							<label
+								value="Responsabile Struttura Change:" width="200px" />
+							<textbox
+								value="@load(vm.apm.respStruttChange)" hflex="1"
+								readonly="true" />
+						</hlayout>
+
+						<hlayout spacing="10px" width="100%">
+							<label value="Codice Struttura Business:"
+								width="200px" />
+							<textbox
+								value="@load(vm.apm.codStruttBusiness)" hflex="1"
+								readonly="true" />
+						</hlayout>
+
+						<hlayout spacing="10px" width="100%">
+							<label
+								value="Descrizione Struttura Business:" width="200px" />
+							<textbox
+								value="@load(vm.apm.descrStruttBusiness)" hflex="1"
+								readonly="true" />
+						</hlayout>
+
+						<hlayout spacing="10px" width="100%">
+							<label
+								value="Responsabile Struttura Business:" width="200px" />
+							<textbox
+								value="@load(vm.apm.respStruttBusiness)" hflex="1"
+								readonly="true" />
+						</hlayout>
+
+						<hlayout spacing="10px" width="100%">
+							<label value="Dati Banca:" width="200px" />
+							<textbox value="@load(vm.apm.datiBanca)"
+								hflex="1" readonly="true" />
+						</hlayout>
+
+						<hlayout spacing="10px" width="100%">
+							<label value="Dati Cliente:" width="200px" />
+							<textbox value="@load(vm.apm.datiCliente)"
+								hflex="1" readonly="true" />
+						</hlayout>
+
+						<hlayout spacing="10px" width="100%">
+							<label value="Dati Personali Clienti PF:"
+								width="200px" />
+							<textbox
+								value="@load(vm.apm.datiPersonaliClientiPf)" hflex="1"
+								readonly="true" />
+						</hlayout>
+
+						<hlayout spacing="10px" width="100%">
+							<label value="Dati Personali Dipendenti:"
+								width="200px" />
+							<textbox
+								value="@load(vm.apm.datiPersonaliDipendenti)" hflex="1"
+								readonly="true" />
+						</hlayout>
+
+						<hlayout spacing="10px" width="100%">
+							<label value="Dati Sensibili Dipendenti:"
+								width="200px" />
+							<textbox
+								value="@load(vm.apm.datiSensibiliDipendenti)" hflex="1"
+								readonly="true" />
+						</hlayout>
+
+						<hlayout spacing="10px" width="100%">
+							<label value="Dati PEP:" width="200px" />
+							<textbox value="@load(vm.apm.datiPep)"
+								hflex="1" readonly="true" />
+						</hlayout>
+
+						<hlayout spacing="10px" width="100%">
+							<label value="Dati SAM:" width="200px" />
+							<textbox value="@load(vm.apm.datiSam)"
+								hflex="1" readonly="true" />
+						</hlayout>
+
+					</vlayout>
+
+					<!-- 🔙 Pulsante Torna indietro -->
+					<hlayout spacing="15px"
+						style="justify-content:flex-end; width:100%;">
+						<button label="Torna all'elenco APM"
+							onClick="@command('goBack')"
+							style="background-color:#7b002c;color:white;border:none;
+								   padding:10px 25px;border-radius:5px;font-weight:bold;" />
+					</hlayout>
+
+				</vlayout>
+			</div>
+		</div>
+
+	</window>
+
+</zk>

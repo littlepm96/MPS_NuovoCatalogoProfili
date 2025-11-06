@@ -1,74 +1,147 @@
 <?page title="Modifica Profilo - Monte dei Paschi di Siena" contentType="text/html;charset=UTF-8"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
 
-    <window width="100%" height="100%"
-             viewModel="@id('vm') @init('com.nttdata.viewmodel.ModificaProfiloViewModel')"
-             apply="org.zkoss.bind.BindComposer">
+	<window width="100%" height="100%"
+		viewModel="@id('vm') @init('com.nttdata.viewmodel.ModificaProfiloViewModel')"
+		apply="org.zkoss.bind.BindComposer">
 
-        <style src="/css/home.css" />
+		<style src="/css/home.css" />
 
-        <!-- Header -->
-        <div sclass="navbar">
-            <hbox>
-                <image id="logoImg" src="/images/logo.png" height="45px" style="margin-right:10px;"/>
-            </hbox>
-            <hbox sclass="menu">
-                <a href="home.zul">Home</a>
-                <a href="#">Servizi</a>
-                <a href="#">Contatti</a>
-            </hbox>
-        </div>
+		<!-- Header -->
+		<div sclass="navbar">
+			<hbox>
+				<image id="logoImg" src="/images/logo.png" height="45px"
+					style="margin-right:10px;" />
+			</hbox>
+			<hbox sclass="menu">
+				<a href="home.zul">Home</a>
+				<a href="#">Servizi</a>
+				<a href="#">Contatti</a>
+			</hbox>
+		</div>
 
-        <div sclass="main-layout">
+		<div sclass="main-layout">
 
-            <!-- Sidebar -->
-            <div sclass="sidebar">
-             
-                <button label="Profili" 
-                        onClick='Executions.sendRedirect("profili.zul")' />
-                <button label="Aggregati" 
-                        onClick='Executions.sendRedirect("aggregati.zul")' style="background-color:#6c757d; color:white;" />
-            </div>
+			<!-- Sidebar -->
+			<div sclass="sidebar">
 
-            <!-- Contenuto principale -->
-            <div sclass="content-area">
-                <vlayout spacing="15px" width="80%" style="margin:20px auto;">
+				<button label="Profili"
+					onClick='Executions.sendRedirect("profili.zul")' />
+				<button label="Aggregati"
+					onClick='Executions.sendRedirect("aggregati.zul")'
+					style="background-color:#6c757d; color:white;" />
+				<button label="APM"
+					onClick='Executions.sendRedirect("apm.zul")'
+					style="background-color:#6c757d; color:white;" />
+				<button label="Target"
+					onClick='Executions.sendRedirect("aggregati.zul")'
+					style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;" />
+				<button label="Azienda"
+					onClick='Executions.sendRedirect("aggregati.zul")'
+					style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;" />
+				<button label="ATS"
+					onClick='Executions.sendRedirect("aggregati.zul")'
+					style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;" />
+			</div>
 
-                    <label value="@load(vm.messaggio)" style="color:red; font-weight:bold; font-size:16px;"/>
+			<!-- Contenuto principale -->
+			<div sclass="content-area">
+				<vlayout spacing="15px" width="80%"
+					style="margin:20px auto;">
 
-                    <!-- Form modificabile -->
-                    <vlayout spacing="10px" width="100%">
+					<label value="@load(vm.messaggio)"
+						style="color:red; font-weight:bold; font-size:16px;" />
 
-                        <hlayout spacing="10px" width="100%"><label value="Target:" width="200px"/><textbox value="@bind(vm.profile.target)" hflex="1"/></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="Ent_code:" width="200px"/><textbox value="@bind(vm.profile.entCode)" hflex="1"/></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="Ent_value:" width="200px"/><textbox value="@bind(vm.profile.entValue)" hflex="1"/></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="Gruppo:" width="200px"/><textbox value="@bind(vm.profile.gruppo)" hflex="1"/></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="Description:" width="200px"/><textbox value="@bind(vm.profile.description)" hflex="1"/></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="App Instance Key:" width="200px"/><textbox value="@bind(vm.profile.appInstanceKey)" hflex="1"/></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="APM:" width="200px"/><textbox value="@bind(vm.profile.apm)" hflex="1"/></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="Grant Type:" width="200px"/><textbox value="@bind(vm.profile.grantType)" hflex="1"/></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="Gadis Tecnologia:" width="200px"/><textbox value="@bind(vm.profile.gadisTecnologia)" hflex="1"/></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="Gadis Approvatore:" width="200px"/><textbox value="@bind(vm.profile.gadisApprovatore)" hflex="1"/></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="ATS:" width="200px"/><textbox value="@bind(vm.profile.ats)" hflex="1"/></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="App Instance Key 1:" width="200px"/><textbox value="@bind(vm.profile.appInstanceKey1)" hflex="1"/></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="Ent List Key:" width="200px"/><textbox value="@bind(vm.profile.entListKey)" hflex="1"/></hlayout>
+					<!-- Form modificabile -->
+					<vlayout spacing="10px" width="100%">
 
-                    </vlayout>
+						<hlayout spacing="10px" width="100%">
+							<label value="Target:" width="200px" />
+							<textbox value="@bind(vm.profile.target)"
+								hflex="1" />
+						</hlayout>
+						<hlayout spacing="10px" width="100%">
+							<label value="Ent_code:" width="200px" />
+							<textbox value="@bind(vm.profile.entCode)"
+								hflex="1" />
+						</hlayout>
+						<hlayout spacing="10px" width="100%">
+							<label value="Ent_value:" width="200px" />
+							<textbox value="@bind(vm.profile.entValue)"
+								hflex="1" />
+						</hlayout>
+						<hlayout spacing="10px" width="100%">
+							<label value="Gruppo:" width="200px" />
+							<textbox value="@bind(vm.profile.gruppo)"
+								hflex="1" />
+						</hlayout>
+						<hlayout spacing="10px" width="100%">
+							<label value="Description:" width="200px" />
+							<textbox
+								value="@bind(vm.profile.description)" hflex="1" />
+						</hlayout>
+						<hlayout spacing="10px" width="100%">
+							<label value="App Instance Key:"
+								width="200px" />
+							<textbox
+								value="@bind(vm.profile.appInstanceKey)" hflex="1" />
+						</hlayout>
+						<hlayout spacing="10px" width="100%">
+							<label value="APM:" width="200px" />
+							<textbox value="@bind(vm.profile.apm)"
+								hflex="1" />
+						</hlayout>
+						<hlayout spacing="10px" width="100%">
+							<label value="Grant Type:" width="200px" />
+							<textbox value="@bind(vm.profile.grantType)"
+								hflex="1" />
+						</hlayout>
+						<hlayout spacing="10px" width="100%">
+							<label value="Gadis Tecnologia:"
+								width="200px" />
+							<textbox
+								value="@bind(vm.profile.gadisTecnologia)" hflex="1" />
+						</hlayout>
+						<hlayout spacing="10px" width="100%">
+							<label value="Gadis Approvatore:"
+								width="200px" />
+							<textbox
+								value="@bind(vm.profile.gadisApprovatore)" hflex="1" />
+						</hlayout>
+						<hlayout spacing="10px" width="100%">
+							<label value="ATS:" width="200px" />
+							<textbox value="@bind(vm.profile.ats)"
+								hflex="1" />
+						</hlayout>
+						<hlayout spacing="10px" width="100%">
+							<label value="App Instance Key 1:"
+								width="200px" />
+							<textbox
+								value="@bind(vm.profile.appInstanceKey1)" hflex="1" />
+						</hlayout>
+						<hlayout spacing="10px" width="100%">
+							<label value="Ent List Key:" width="200px" />
+							<textbox
+								value="@bind(vm.profile.entListKey)" hflex="1" />
+						</hlayout>
 
-                    <!-- Pulsanti -->
-                    <hlayout spacing="15px" style="justify-content:flex-end; width:100%;">
-                        <button label="Salva"
-                                onClick="@command('saveChanges')"
-                                style="background-color:#7b002c;color:white;border:none;padding:10px 25px;border-radius:5px;font-weight:bold;"/>
-                        <button label="Annulla"
-                                onClick='Executions.sendRedirect("profili.zul")'
-                                style="background-color:#6c757d;color:white;border:none;padding:10px 25px;border-radius:5px;font-weight:bold;"/>
-                    </hlayout>
+					</vlayout>
 
-                </vlayout>
-            </div>
-        </div>
+					<!-- Pulsanti -->
+					<hlayout spacing="15px"
+						style="justify-content:flex-end; width:100%;">
+						<button label="Salva"
+							onClick="@command('saveChanges')"
+							style="background-color:#7b002c;color:white;border:none;padding:10px 25px;border-radius:5px;font-weight:bold;" />
+						<button label="Annulla"
+							onClick='Executions.sendRedirect("profili.zul")'
+							style="background-color:#6c757d;color:white;border:none;padding:10px 25px;border-radius:5px;font-weight:bold;" />
+					</hlayout>
 
-    </window>
+				</vlayout>
+			</div>
+		</div>
+
+	</window>
 
 </zk>

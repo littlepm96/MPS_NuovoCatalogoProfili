@@ -1,13 +1,13 @@
-<?page title="Profili - Monte dei Paschi di Siena" contentType="text/html;charset=UTF-8"?>
+<?page title="APM - Monte dei Paschi di Siena" contentType="text/html;charset=UTF-8"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
 	<window width="100%" height="100%"
-		viewModel="@id('vm') @init('com.nttdata.viewmodel.ProfiliViewModel')"
+		viewModel="@id('vm') @init('com.nttdata.viewmodel.ApmViewModel')"
 		apply="org.zkoss.bind.BindComposer">
 
 		<style src="/css/home.css" />
 		<script src="/js/home.js" />
 
-		<!-- Barra superiore -->
+		<!-- 🔝 Barra superiore -->
 		<div sclass="navbar">
 			<hbox>
 				<image id="logoImg" src="/images/logo.png" height="45px"
@@ -20,19 +20,18 @@
 			</hbox>
 		</div>
 
-		<!-- Layout principale -->
+		<!-- 🧭 Layout principale -->
 		<div sclass="main-layout">
 
-			<!-- Sidebar -->
+			<!-- 📁 Sidebar -->
 			<div sclass="sidebar">
 				<button label="Profili"
-					onClick='Executions.sendRedirect("profili.zul")' />
+					onClick='Executions.sendRedirect("profili.zul")' style="background-color:#6c757d; color:white;"  />
 				<button label="Aggregati"
-					onClick='Executions.sendRedirect("aggregati.zul")'
-					style="background-color:#6c757d; color:white;" />
+					onClick='Executions.sendRedirect("aggregati.zul")' style="background-color:#6c757d; color:white;;" />
 				<button label="APM"
 					onClick='Executions.sendRedirect("apm.zul")'
-					style="background-color:#6c757d; color:white;"  />
+					style="background-color:#7b002c; color:white;" />
 				<button label="Target"
 					onClick='Executions.sendRedirect("aggregati.zul")'
 					style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;" />
@@ -44,26 +43,25 @@
 					style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;" />
 			</div>
 
-
-
-			<!-- Contenuto principale -->
+			<!-- 📋 Contenuto principale -->
 			<div sclass="content-area">
 
 				<label value="@load(vm.messaggio)"
 					style="font-size:16px; color:#333; margin-bottom:15px;" />
 
-				<!-- 🔍 Barra di ricerca con filtro per colonna -->
+				<!-- 🔍 Barra di ricerca -->
 				<hbox style="margin-bottom:10px;" align="center">
 					<label value="Cerca in:"
 						style="margin-right:5px; font-weight:500;" />
 					<combobox value="@bind(vm.searchColumn)"
 						width="150px" readonly="true" style="margin-right:10px;">
 						<comboitem label="Tutti" value="Tutti" />
-						<comboitem label="Target" value="Target" />
-						<comboitem label="Ent_code" value="Ent_code" />
-						<comboitem label="Ent_value" value="Ent_value" />
-						<comboitem label="Gruppo" value="Gruppo" />
-						<comboitem label="APM" value="APM" />
+						<comboitem label="APP" value="APP" />
+						<comboitem label="DESCRIZIONE"
+							value="DESCRIZIONE" />
+						<comboitem label="STATO" value="STATO" />
+						<comboitem label="COD_STRUTTURA_CHANGE"
+							value="COD_STRUTTURA_CHANGE" />
 					</combobox>
 
 					<textbox placeholder="Inserisci testo da cercare..."
@@ -71,24 +69,25 @@
 						style="margin-right:10px;" />
 
 					<button label="Cerca"
-						onClick="@command('filterProfiles')"
+						onClick="@command('filterApm')"
 						style="background-color:#7b002c; color:white;
-                                   border:none; padding:5px 15px; border-radius:4px; font-weight:500;" />
+                               border:none; padding:5px 15px; border-radius:4px; font-weight:500;" />
 					<button label="Pulisci"
 						onClick="@command('clearSearch')"
 						style="margin-left:10px; background-color:#6c757d; color:white;
-                                   border:none; padding:5px 15px; border-radius:4px; font-weight:500;" />
+                               border:none; padding:5px 15px; border-radius:4px; font-weight:500;" />
 				</hbox>
 
-				<!-- Contenitore tabella -->
+				<!-- 🧾 Contenitore tabella -->
 				<div sclass="table-container">
+
 					<div sclass="table-header">
 						<hbox align="center" pack="stretch"
 							width="100%">
-							<label value="Elenco Profili"
+							<label value="Elenco Applicazioni APM"
 								style="font-weight:bold; font-size:14px;" />
 
-							<!-- Selettore dimensione pagina -->
+							<!-- Selettore righe per pagina -->
 							<hbox align="center" spacing="5px">
 								<label value="Righe per pagina:"
 									style="font-size:12px;" />
@@ -105,14 +104,13 @@
 						</hbox>
 					</div>
 
-					<!-- Controlli paginazione superiori -->
+					<!-- 🔄 Controlli paginazione (sopra) -->
 					<div
 						style="padding:10px; background:#f8f9fa; border-bottom:1px solid #ddd;">
 						<hbox align="center" pack="justify"
 							width="100%">
 							<label value="@load(vm.recordInfo)"
 								style="font-size:12px; color:#666;" />
-
 							<hbox spacing="5px">
 								<button label="«"
 									onClick="@command('firstPage')" disabled="@load(vm.firstPage)"
@@ -133,66 +131,45 @@
 						</hbox>
 					</div>
 
+					<!-- 📊 Tabella APM -->
 					<div id="tableScrollWrapper"
 						sclass="table-scroll-wrapper"
 						style="max-height:550px; overflow-y:auto;">
 
-						<grid id="gridProfili"
-							model="@bind(vm.filteredProfiles)"
+						<grid id="gridApm" model="@bind(vm.filteredApm)"
 							emptyMessage="Nessun record trovato"
-							selection="@bind(vm.selectedProfile)" sclass="wide-grid"
+							selection="@bind(vm.selectedApm)" sclass="wide-grid"
 							width="100%">
 
 							<columns sizable="false">
-								<column label="Target" width="20%"
+								<column label="APP" width="20%"
 									style="background-color:#7b002c; color:white;" />
-								<column label="Ent_code" width="15%"
+								<column label="DESCRIZIONE" width="35%"
 									style="background-color:#7b002c; color:white;" />
-								<column label="Ent_value" width="15%"
+								<column label="STATO" width="15%"
 									style="background-color:#7b002c; color:white;" />
-								<column label="Gruppo" width="25%"
-									style="background-color:#7b002c; color:white;" />
-								<column label="APM" width="15%"
-									style="background-color:#7b002c; color:white;" />
-								<column label="Azioni" width="10%"
-									style="background-color:#7b002c; color:white;" />
+								<column label="COD_STRUTTURA_CHANGE"
+									width="20%" style="background-color:#7b002c; color:white;" />
 							</columns>
 
 							<template name="model">
 								<row
-									onClick="@command('openDetails', entCode=each.entCode)"
+									onClick="@command('openDetails', app=each.app)"
 									style="cursor:pointer;"
 									tooltiptext="Clicca per vedere i dettagli">
-									<label value="@load(each.target)" />
-									<label value="@load(each.entCode)" />
-									<label value="@load(each.entValue)" />
-									<label value="@load(each.gruppo)" />
-									<label value="@load(each.apm)" />
-
-									<hbox spacing="10px" align="center"
-										onClick="event.stopPropagation();">
-										<!-- Icona Modifica -->
-										<image src="/images/edit-4.png"
-											height="24px"
-											onClick="@command('openEdit', entCode=each.entCode)"
-											style="cursor:pointer;" tooltiptext="Modifica profilo" />
-
-										<!-- Icona Elimina -->
-										<image src="/images/trash2.png"
-											height="24px"
-											onClick="@command('confirmAndExecuteProfile',
-                                                                 message='Sei sicuro di voler eliminare questo profilo?',
-                                                                 commandName='deleteProfile',
-                                                                 param=each)"
-											style="cursor:pointer;" tooltiptext="Elimina profilo" />
-									</hbox>
+									<label value="@load(each.app)" />
+									<label
+										value="@load(each.descrizione)" />
+									<label value="@load(each.stato)" />
+									<label
+										value="@load(each.codStrutturaChange)" />
 								</row>
 							</template>
 
 						</grid>
 					</div>
 
-					<!-- Controlli paginazione inferiori -->
+					<!-- 🔄 Controlli paginazione (sotto) -->
 					<div
 						style="padding:10px; background:#f8f9fa; border-top:1px solid #ddd;">
 						<hbox align="center" pack="center" width="100%"
@@ -213,10 +190,9 @@
 								sclass="pagination-btn" />
 						</hbox>
 					</div>
+
 				</div>
 			</div>
 		</div>
-
 	</window>
 </zk>
-

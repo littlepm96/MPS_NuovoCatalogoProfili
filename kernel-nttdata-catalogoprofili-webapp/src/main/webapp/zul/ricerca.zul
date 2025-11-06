@@ -1,0 +1,100 @@
+<?page title="Risultati - Monte dei Paschi di Siena" contentType="text/html;charset=UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+<window width="100%" height="100%">
+
+    <style src="/css/home.css" />
+
+    <!-- Barra superiore -->
+    <div sclass="navbar">
+        <hbox>
+            <image id="logoImg" src="/images/logo.png" height="45px"
+                   style="margin-right:10px;" />
+        </hbox>
+        <hbox sclass="menu">
+            <a href="home.zul">Home</a>
+            <a href="#">Servizi</a>
+            <a href="#">Contatti</a>
+        </hbox>
+    </div>
+
+    <!-- Layout principale -->
+    <div sclass="main-layout"
+         style="display:flex; flex-direction:row; height:calc(100% - 60px);">
+
+        <!-- Sidebar -->
+        <div sclass="sidebar">
+            <button label="Profili"
+                    onClick='Executions.sendRedirect("profili.zul")'
+                    style="width:100%; margin-bottom:12px; background-color:#6c757d; color:white;
+                           border:none; padding:10px; border-radius:6px; cursor:pointer;" />
+            <button label="Aggregati"
+                    onClick='Executions.sendRedirect("aggregati.zul")'
+                    style="width:100%; margin-bottom:12px; background-color:#6c757d; color:white;
+                           border:none; padding:10px; border-radius:6px; cursor:pointer;" />
+        </div>
+
+        <!-- Contenuto principale -->
+        <div sclass="content-area"
+             style="flex:1; text-align:center; padding:40px;">
+
+            <label value="Risultati della Ricerca"
+                   style="color:#7b002c; font-size:36px; font-weight:bold;
+                          display:block; margin-bottom:25px;" />
+
+            <!-- Parametri di ricerca (se inviati) -->
+            <hlayout spacing="20px" style="margin-bottom:20px; color:#555; justify-content:center;">
+                <label value="Nome:" />
+                <label value="${param.nome}" style="font-weight:bold;" />
+                <label value="Categoria:" />
+                <label value="${param.categoria}" style="font-weight:bold;" />
+                <label value="Data:" />
+                <label value="${param.data}" style="font-weight:bold;" />
+            </hlayout>
+
+            <!-- Tabella risultati -->
+            <listbox mold="paging" pageSize="10"
+                     style="width:80%; margin:auto; border:1px solid #ddd;
+                            border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+                <listhead>
+                    <listheader label="ID Profilo" width="15%" style="background-color:#7b002c; color:white;"/>
+                    <listheader label="Nome" width="35%" style="background-color:#7b002c; color:white;" />
+                    <listheader label="Categoria" width="25%" style="background-color:#7b002c; color:white;"/>
+                    <listheader label="Data Creazione" width="25%" style="background-color:#7b002c; color:white;" />
+                </listhead>
+
+                <!-- Dati di esempio -->
+                <listitem>
+                    <listcell label="001" />
+                    <listcell label="Mario Rossi" />
+                    <listcell label="Gestore" />
+                    <listcell label="2024-12-10" />
+                </listitem>
+
+                <listitem>
+                    <listcell label="002" />
+                    <listcell label="Luca Bianchi" />
+                    <listcell label="Cliente" />
+                    <listcell label="2024-12-12" />
+                </listitem>
+
+                <listitem>
+                    <listcell label="003" />
+                    <listcell label="Giulia Verdi" />
+                    <listcell label="Altro" />
+                    <listcell label="2025-01-05" />
+                </listitem>
+            </listbox>
+
+            <!-- Pulsante per tornare indietro -->
+            <button label="Torna alla Home"
+                    onClick='Executions.sendRedirect("home.zul")'
+                    style="margin-top:30px; width:220px; background-color:#7b002c; color:white;
+                           border:none; padding:12px; border-radius:6px; cursor:pointer;
+                           font-weight:bold;" />
+        </div>
+
+        
+
+    </div>
+</window>
+</zk>
