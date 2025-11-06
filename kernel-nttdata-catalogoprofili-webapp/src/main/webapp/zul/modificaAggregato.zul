@@ -23,8 +23,8 @@
 
             <!-- Sidebar -->
             <div sclass="sidebar">
-                <button label="Profili" onClick='Executions.sendRedirect("profili.zul")' />
-                <button label="Aggregati" onClick='Executions.sendRedirect("aggregati.zul")' style="background-color:#6c757d; color:white;" />
+                <button label="Profili" onClick='Executions.sendRedirect("profili.zul")' style="background-color:#6c757d; color:white;" />
+                <button label="Aggregati" onClick='Executions.sendRedirect("aggregati.zul")'/>
             </div>
 
             <!-- Contenuto principale -->
@@ -86,7 +86,7 @@
                     <!-- Pulsanti -->
                     <hlayout spacing="15px" style="justify-content:flex-end; width:100%;">
                         <button label="Salva" onClick="@command('saveChanges')"
-                                style="background-color:#28a745;color:white;border:none;padding:10px 25px;border-radius:5px;font-weight:bold;"/>
+                                style="background-color:#7b002c;color:white;border:none;padding:10px 25px;border-radius:5px;font-weight:bold;"/>
                         <button label="Annulla" onClick='Executions.sendRedirect("aggregati.zul")'
                                 style="background-color:#6c757d;color:white;border:none;padding:10px 25px;border-radius:5px;font-weight:bold;"/>
                     </hlayout>

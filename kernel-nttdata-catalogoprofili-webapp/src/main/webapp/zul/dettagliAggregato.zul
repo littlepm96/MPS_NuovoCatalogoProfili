@@ -1,72 +1,112 @@
 <?page title="Dettagli Aggregato - Monte dei Paschi di Siena" contentType="text/html;charset=UTF-8"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
 
-    <window width="100%" height="100%"
-             viewModel="@id('vm') @init('com.nttdata.viewmodel.DettagliAggregatoViewModel')"
-             apply="org.zkoss.bind.BindComposer">
+	<window width="100%" height="100%"
+		viewModel="@id('vm') @init('com.nttdata.viewmodel.DettagliAggregatoViewModel')"
+		apply="org.zkoss.bind.BindComposer">
 
-        <style src="/css/home.css" />
+		<style src="/css/home.css" />
 
-        <!-- Header -->
-        <div sclass="navbar">
-            <hbox>
-                <image id="logoImg" src="/images/logo.png" height="45px" style="margin-right:10px;"/>
-            </hbox>
-            <hbox sclass="menu">
-                <a href="index.zul">Home</a>
-                <a href="#">Servizi</a>
-                <a href="#">Contatti</a>
-            </hbox>
-        </div>
+		<!-- Header -->
+		<div sclass="navbar">
+			<hbox>
+				<image id="logoImg" src="/images/logo.png" height="45px"
+					style="margin-right:10px;" />
+			</hbox>
+			<hbox sclass="menu">
+				<a href="index.zul">Home</a>
+				<a href="#">Servizi</a>
+				<a href="#">Contatti</a>
+			</hbox>
+		</div>
 
-        <div sclass="main-layout">
+		<div sclass="main-layout">
 
-            <!-- Sidebar -->
-            <div sclass="sidebar">
-                <button label="Profili" onClick='Executions.sendRedirect("profili.zul")' />
-                <button label="Aggregati" onClick='Executions.sendRedirect("aggregati.zul")' style="background-color:#6c757d; color:white;" />
-            </div>
+			<!-- Sidebar -->
+			<div sclass="sidebar">
+				<button label="Profili"
+					onClick='Executions.sendRedirect("profili.zul")'
+					style="background-color:#6c757d; color:white;" />
+				<button label="Aggregati"
+					onClick='Executions.sendRedirect("aggregati.zul")' />
+			</div>
 
-            <!-- Contenuto principale -->
-            <div sclass="content-area">
-                <vlayout spacing="15px" width="80%" style="margin:20px auto;">
+			<!-- Contenuto principale -->
+			<div sclass="content-area">
+				<vlayout spacing="15px" width="80%"
+					style="margin:20px auto;">
 
-                    <label value="@load(vm.messaggio)" style="font-weight:bold; font-size:20px; color:#333;"/>
+					<label value="@load(vm.messaggio)"
+						style="font-weight:bold; font-size:20px; color:#333;" />
 
-                    <!-- Info Aggregato -->
-                    <vlayout spacing="10px" width="100%">
-                        <hlayout spacing="10px" width="100%"><label value="Nome Aggregato:" width="200px"/><textbox value="@load(vm.aggregato.nomeAggregato)" hflex="1" readonly="true"/></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="Tipologia:" width="200px"/><textbox value="@load(vm.aggregato.tipologia)" hflex="1" readonly="true"/></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="Descrizione:" width="200px"/><textbox value="@load(vm.aggregato.descrizione)" hflex="1" readonly="true"/></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="Ad Personam:" width="200px"/><textbox value="@load(vm.aggregato.adPersonam)" hflex="1" readonly="true"/></hlayout>
-                        <hlayout spacing="10px" width="100%"><label value="Ricertificabile:" width="200px"/><textbox value="@load(vm.aggregato.ricertificabile)" hflex="1" readonly="true"/></hlayout>
-                    </vlayout>
+					<!-- Info Aggregato -->
+					<vlayout spacing="10px" width="100%">
+						<hlayout spacing="10px" width="100%">
+							<label value="Nome Aggregato:"
+								width="200px" />
+							<textbox
+								value="@load(vm.aggregato.nomeAggregato)" hflex="1"
+								readonly="true" />
+						</hlayout>
+						<hlayout spacing="10px" width="100%">
+							<label value="Tipologia:" width="200px" />
+							<textbox
+								value="@load(vm.aggregato.tipologia)" hflex="1" readonly="true" />
+						</hlayout>
+						<hlayout spacing="10px" width="100%">
+							<label value="Descrizione:" width="200px" />
+							<textbox
+								value="@load(vm.aggregato.descrizione)" hflex="1"
+								readonly="true" />
+						</hlayout>
+						<hlayout spacing="10px" width="100%">
+							<label value="Ad Personam:" width="200px" />
+							<textbox
+								value="@load(vm.aggregato.adPersonam)" hflex="1"
+								readonly="true" />
+						</hlayout>
+						<hlayout spacing="10px" width="100%">
+							<label value="Ricertificabile:"
+								width="200px" />
+							<textbox
+								value="@load(vm.aggregato.ricertificabile)" hflex="1"
+								readonly="true" />
+						</hlayout>
+					</vlayout>
 
-                    <!-- Grid Regole -->
-                    <label value="Regole associate:" style="font-weight:bold; margin-top:20px;"/>
-                    <grid model="@bind(vm.regoleAggregato)" emptyMessage="Nessuna regola trovata" width="100%" height="300px">
-                        <columns>
-                            <column label="ID Regola" width="20%"/>
-                            <column label="Contenuto Regola" width="80%"/>
-                        </columns>
-                        <template name="model">
-                            <row>
-                                <label value="@load(each[0])"/>
-                                <textbox value="@load(each[1])" readonly="true" hflex="1" multiline="true"/>
-                            </row>
-                        </template>
-                    </grid>
+					<!-- Grid Regole -->
+					<label value="Regole associate:"
+						style="font-weight:bold; margin-top:20px;" />
+					<grid model="@bind(vm.regoleAggregato)"
+						emptyMessage="Nessuna regola trovata" width="100%"
+						height="300px">
+						<columns>
+							<column label="ID Regola" width="20%"
+								style="background-color:#7b002c; color:white; font-weight:bold;" />
+							<column label="Contenuto Regola" width="80%"
+								style="background-color:#7b002c; color:white; font-weight:bold;" />
+						</columns>
+						<template name="model">
+							<row>
+								<label value="@load(each[0])" />
+								<textbox value="@load(each[1])"
+									readonly="true" hflex="1" multiline="true" />
+							</row>
+						</template>
+					</grid>
 
-                    <!-- Pulsante home -->
-                    <hlayout spacing="15px" style="justify-content:flex-end; width:100%; margin-top:20px;">
-                        <button label="Torna agli Aggregati" onClick="@command('goBack')"
-                                style="background-color:#7b002c;color:white;border:none;padding:10px 25px;border-radius:5px;font-weight:bold;"/>
-                    </hlayout>
+					<!-- Pulsante home -->
+					<hlayout spacing="15px"
+						style="justify-content:flex-end; width:100%; margin-top:20px;">
+						<button label="Torna agli Aggregati"
+							onClick="@command('goBack')"
+							style="background-color:#7b002c;color:white;border:none;padding:10px 25px;border-radius:5px;font-weight:bold;" />
+					</hlayout>
 
-                </vlayout>
-            </div>
-        </div>
+				</vlayout>
+			</div>
+		</div>
 
-    </window>
+	</window>
 
 </zk>

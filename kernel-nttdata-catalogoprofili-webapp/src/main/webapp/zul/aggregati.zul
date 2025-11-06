@@ -23,10 +23,9 @@
 			<!-- Sidebar -->
 			<div sclass="sidebar">
 				<button label="Profili"
-					onClick='Executions.sendRedirect("profili.zul")' />
+					onClick='Executions.sendRedirect("profili.zul")' style="background-color:#6c757d; color:white;" />
 				<button label="Aggregati"
-					onClick='Executions.sendRedirect("aggregati.zul")'
-					style="background-color:#6c757d; color:white;" />
+					onClick='Executions.sendRedirect("aggregati.zul")'/>
 			</div>
 
 			<!-- Contenuto principale -->
