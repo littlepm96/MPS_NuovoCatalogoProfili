@@ -21,12 +21,11 @@ public class ApmViewModel {
     private List<Apm> workingApmList; // Lista filtrabile
     private ListModelList<Apm> filteredApm; // Lista visibile in griglia
     private Apm selectedApm; // Elemento selezionato
-
-    private String searchText = "";
+    private String searchText;
     private String searchColumn = "Tutti";
     private String messaggio = "Gestione Applicazioni APM";
 
-    // Paginazione
+    // Variabili per paginazione
     private int pageSize = 10;
     private int currentPage = 0;
     private int totalRecords = 0;
@@ -43,7 +42,7 @@ public class ApmViewModel {
     // CARICA DATI DAL SERVICE
     // =========================
     @Command
-    @NotifyChange({ "filteredApm", "totalRecords", "totalPages", "currentPage", "recordInfo", "pageInfo" })
+    @NotifyChange({"filteredApm", "totalRecords", "totalPages", "currentPage", "recordInfo", "pageInfo"})
     public void loadApmList() {
         allApmList = apmService.getAllApm();
 
@@ -63,7 +62,7 @@ public class ApmViewModel {
     }
 
     // =========================
-    // AGGIORNA LA LISTA PAGINATA
+    // PAGINAZIONE
     // =========================
     private void updatePagedList() {
         if (workingApmList == null || workingApmList.isEmpty()) {
@@ -79,14 +78,15 @@ public class ApmViewModel {
 
     private void calculateTotalPages() {
         totalPages = (int) Math.ceil((double) totalRecords / pageSize);
-        if (totalPages == 0) totalPages = 1;
+        if (totalPages == 0)
+            totalPages = 1;
     }
 
     // =========================
-    // FILTRA DATI
+    // FILTRO DI RICERCA
     // =========================
     @Command
-    @NotifyChange({ "filteredApm", "totalRecords", "totalPages", "currentPage", "recordInfo", "pageInfo" })
+    @NotifyChange({"filteredApm", "totalRecords", "totalPages", "currentPage", "recordInfo", "pageInfo"})
     public void filterApm() {
         if (allApmList == null || allApmList.isEmpty()) {
             workingApmList = new ArrayList<>();
@@ -109,6 +109,7 @@ public class ApmViewModel {
         }
 
         List<Apm> result;
+
         switch (searchColumn) {
             case "APP":
                 result = allApmList.stream()
@@ -130,12 +131,14 @@ public class ApmViewModel {
                         .filter(a -> a.getCodStrutturaChange() != null && a.getCodStrutturaChange().toLowerCase().contains(lowerSearch))
                         .collect(Collectors.toList());
                 break;
-            default: // "Tutti"
+            default:
                 result = allApmList.stream()
-                        .filter(a -> (a.getApp() != null && a.getApp().toLowerCase().contains(lowerSearch)) ||
-                                     (a.getDescrizione() != null && a.getDescrizione().toLowerCase().contains(lowerSearch)) ||
-                                     (a.getStato() != null && a.getStato().toLowerCase().contains(lowerSearch)) ||
-                                     (a.getCodStrutturaChange() != null && a.getCodStrutturaChange().toLowerCase().contains(lowerSearch)))
+                        .filter(a ->
+                                (a.getApp() != null && a.getApp().toLowerCase().contains(lowerSearch)) ||
+                                (a.getDescrizione() != null && a.getDescrizione().toLowerCase().contains(lowerSearch)) ||
+                                (a.getStato() != null && a.getStato().toLowerCase().contains(lowerSearch)) ||
+                                (a.getCodStrutturaChange() != null && a.getCodStrutturaChange().toLowerCase().contains(lowerSearch))
+                        )
                         .collect(Collectors.toList());
                 break;
         }
@@ -151,7 +154,7 @@ public class ApmViewModel {
     // PULISCI FILTRO
     // =========================
     @Command
-    @NotifyChange({ "filteredApm", "searchText", "searchColumn", "totalRecords", "totalPages", "currentPage", "recordInfo", "pageInfo" })
+    @NotifyChange({"filteredApm", "searchText", "searchColumn", "totalRecords", "totalPages", "currentPage", "recordInfo", "pageInfo"})
     public void clearSearch() {
         searchText = "";
         searchColumn = "Tutti";
@@ -170,35 +173,42 @@ public class ApmViewModel {
     }
 
     // =========================
-    // NAVIGAZIONE PAGINAZIONE
+    // PAGINAZIONE COMANDI
     // =========================
     @Command
-    @NotifyChange({ "filteredApm", "currentPage", "recordInfo", "pageInfo", "firstPage", "lastPage" })
-    public void firstPage() { currentPage = 0; updatePagedList(); }
-
-    @Command
-    @NotifyChange({ "filteredApm", "currentPage", "recordInfo", "pageInfo", "firstPage", "lastPage" })
-    public void previousPage() { if (currentPage > 0) { currentPage--; updatePagedList(); } }
-
-    @Command
-    @NotifyChange({ "filteredApm", "currentPage", "recordInfo", "pageInfo", "firstPage", "lastPage" })
-    public void nextPage() { if (currentPage < totalPages - 1) { currentPage++; updatePagedList(); } }
-
-    @Command
-    @NotifyChange({ "filteredApm", "currentPage", "recordInfo", "pageInfo", "firstPage", "lastPage" })
-    public void lastPage() { currentPage = totalPages - 1; updatePagedList(); }
-
-    @Command
-    @NotifyChange({ "filteredApm", "totalPages", "currentPage", "pageSize", "recordInfo", "pageInfo" })
-    public void changePageSize(@BindingParam("size") int size) {
-        pageSize = size;
+    @NotifyChange({"filteredApm", "currentPage", "recordInfo", "pageInfo", "firstPage", "lastPage"})
+    public void firstPage() {
         currentPage = 0;
-        calculateTotalPages();
+        updatePagedList();
+    }
+
+    @Command
+    @NotifyChange({"filteredApm", "currentPage", "recordInfo", "pageInfo", "firstPage", "lastPage"})
+    public void previousPage() {
+        if (currentPage > 0) {
+            currentPage--;
+            updatePagedList();
+        }
+    }
+
+    @Command
+    @NotifyChange({"filteredApm", "currentPage", "recordInfo", "pageInfo", "firstPage", "lastPage"})
+    public void nextPage() {
+        if (currentPage < totalPages - 1) {
+            currentPage++;
+            updatePagedList();
+        }
+    }
+
+    @Command
+    @NotifyChange({"filteredApm", "currentPage", "recordInfo", "pageInfo", "firstPage", "lastPage"})
+    public void lastPage() {
+        currentPage = totalPages - 1;
         updatePagedList();
     }
 
     // =========================
-    // AZIONI SU APM
+    // AZIONI APM
     // =========================
     @Command
     public void openEdit(@BindingParam("app") String app) {
@@ -219,7 +229,7 @@ public class ApmViewModel {
     }
 
     @Command
-    @NotifyChange({ "filteredApm", "totalRecords", "totalPages", "currentPage", "recordInfo", "pageInfo" })
+    @NotifyChange({"filteredApm", "totalRecords", "totalPages", "currentPage", "recordInfo", "pageInfo"})
     public void deleteApm(@BindingParam("param") Apm apm) {
         if (apm == null || apm.getApp() == null) {
             Clients.showNotification("Applicazione non valida!", "error", null, "middle_center", 2000);
@@ -228,6 +238,7 @@ public class ApmViewModel {
 
         try {
             boolean success = apmService.deleteApm(apm.getApp());
+
             if (success) {
                 Clients.showNotification("Applicazione eliminata con successo!", "info", null, "middle_center", 2000);
                 loadApmList();
@@ -254,24 +265,77 @@ public class ApmViewModel {
     }
 
     // =========================
-    // GETTER / SETTER
+    // GETTER E SETTER
     // =========================
-    public ListModelList<Apm> getFilteredApm() { return filteredApm; }
-    public Apm getSelectedApm() { return selectedApm; }
-    public void setSelectedApm(Apm selectedApm) { this.selectedApm = selectedApm; }
-    public String getSearchText() { return searchText; }
-    public void setSearchText(String searchText) { this.searchText = searchText; }
-    public String getSearchColumn() { return searchColumn; }
-    public void setSearchColumn(String searchColumn) { this.searchColumn = searchColumn; }
-    public String getMessaggio() { return messaggio; }
-    public int getPageSize() { return pageSize; }
-    public int getCurrentPage() { return currentPage; }
-    public int getTotalRecords() { return totalRecords; }
-    public int getTotalPages() { return totalPages; }
-    public int getFromRecord() { return totalRecords == 0 ? 0 : (currentPage * pageSize) + 1; }
-    public int getToRecord() { return Math.min((currentPage + 1) * pageSize, totalRecords); }
-    public boolean isFirstPage() { return currentPage == 0; }
-    public boolean isLastPage() { return currentPage >= totalPages - 1; }
-    public String getRecordInfo() { return getFromRecord() + " - " + getToRecord() + " di " + totalRecords + " record"; }
-    public String getPageInfo() { return "Pagina " + (currentPage + 1) + " di " + totalPages; }
+    public ListModelList<Apm> getFilteredApm() {
+        return filteredApm;
+    }
+
+    public Apm getSelectedApm() {
+        return selectedApm;
+    }
+
+    public void setSelectedApm(Apm selectedApm) {
+        this.selectedApm = selectedApm;
+    }
+
+    public String getSearchText() {
+        return searchText;
+    }
+
+    public void setSearchText(String searchText) {
+        this.searchText = searchText;
+    }
+
+    public String getMessaggio() {
+        return messaggio;
+    }
+
+    public String getSearchColumn() {
+        return searchColumn;
+    }
+
+    public void setSearchColumn(String searchColumn) {
+        this.searchColumn = searchColumn;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public int getTotalRecords() {
+        return totalRecords;
+    }
+
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+    public int getFromRecord() {
+        return totalRecords == 0 ? 0 : (currentPage * pageSize) + 1;
+    }
+
+    public int getToRecord() {
+        return Math.min((currentPage + 1) * pageSize, totalRecords);
+    }
+
+    public boolean isFirstPage() {
+        return currentPage == 0;
+    }
+
+    public boolean isLastPage() {
+        return currentPage >= totalPages - 1;
+    }
+
+    public String getRecordInfo() {
+        return getFromRecord() + " - " + getToRecord() + " di " + totalRecords + " record";
+    }
+
+    public String getPageInfo() {
+        return "Pagina " + (currentPage + 1) + " di " + totalPages;
+    }
 }
