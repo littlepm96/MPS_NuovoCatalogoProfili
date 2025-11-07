@@ -1,0 +1,54 @@
+package com.nttdata.model;
+
+import java.sql.Date;
+
+public class Azienda {
+    private int idAzienda;
+    private String aziendaNome;
+    private Date creationDate;
+    private Date updateDate;
+
+    public Azienda() {}
+
+    public int getIdAzienda() {
+        return idAzienda;
+    }
+
+    public void setIdAzienda(int idAzienda) {
+        this.idAzienda = idAzienda;
+    }
+
+    public String getAziendaNome() {
+        return aziendaNome;
+    }
+
+    public void setAziendaNome(String aziendaNome) {
+        this.aziendaNome = aziendaNome;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Azienda{" +
+                "idAzienda=" + idAzienda +
+                ", aziendaNome='" + aziendaNome + '\'' +
+                ", creationDate=" + creationDate +
+                ", updateDate=" + updateDate +
+                '}';
+    }
+}
