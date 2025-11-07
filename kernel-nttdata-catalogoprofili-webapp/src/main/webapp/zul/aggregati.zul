@@ -23,9 +23,22 @@
 			<!-- Sidebar -->
 			<div sclass="sidebar">
 				<button label="Profili"
-					onClick='Executions.sendRedirect("profili.zul")' style="background-color:#6c757d; color:white;" />
+					onClick='Executions.sendRedirect("profili.zul")'
+					style="background-color:#6c757d; color:white;" />
 				<button label="Aggregati"
-					onClick='Executions.sendRedirect("aggregati.zul")'/>
+					onClick='Executions.sendRedirect("aggregati.zul")' />
+				<button label="APM"
+					onClick='Executions.sendRedirect("apm.zul")'
+					style="background-color:#6c757d; color:white;" />
+				<button label="Target"
+					onClick='Executions.sendRedirect("aggregati.zul")'
+					style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;" />
+				<button label="Azienda"
+					onClick='Executions.sendRedirect("aggregati.zul")'
+					style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;" />
+				<button label="ATS"
+					onClick='Executions.sendRedirect("aggregati.zul")'
+					style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;" />
 			</div>
 
 			<!-- Contenuto principale -->

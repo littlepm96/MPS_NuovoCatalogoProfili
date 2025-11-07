@@ -1,74 +1,71 @@
 <?page title="Home - Monte dei Paschi di Siena" contentType="text/html;charset=UTF-8"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-<window width="100%" height="100%">
- 
-		<style src="/css/home.css" />
- 
-		<!-- Barra superiore -->
-<div sclass="navbar">
-<hbox>
-<image id="logoImg" src="/images/logo.png" height="45px"
+	<window width="100%" height="100%">
+		<style src="/css/home.css" /><!-- Barra superiore -->
+		<div sclass="navbar">
+			<hbox>
+				<image id="logoImg" src="/images/logo.png" height="45px"
 					style="margin-right:10px;" />
-</hbox>
-<hbox sclass="menu">
-<a href="home.zul">Home</a>
-<a href="#">Servizi</a>
-<a href="#">Contatti</a>
-</hbox>
-</div>
- 
-		<!-- Layout principale -->
-<div sclass="main-layout"
+			</hbox>
+			<hbox sclass="menu">
+				<a href="home.zul">Home</a>
+				<a href="#">Servizi</a>
+				<a href="#">Contatti</a>
+			</hbox>
+		</div><!-- Layout principale -->
+		<div sclass="main-layout"
 			style="display:flex; flex-direction:row; height:calc(100% - 60px);">
- 
 			<!-- Sidebar -->
-<div sclass="sidebar">
-<button label="Profili"
+			<div sclass="sidebar">
+				<button label="Profili"
 					onClick='Executions.sendRedirect("profili.zul")'
 					style="width:100%; margin-bottom:12px; background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;" />
-<button label="Aggregati"
+				<button label="Aggregati"
 					onClick='Executions.sendRedirect("aggregati.zul")'
 					style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;" />
-</div>
- 
+				<button label="APM"
+					onClick='Executions.sendRedirect("apm.zul")'
+					style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;" />
+				<button label="Target"
+					onClick='Executions.sendRedirect("aggregati.zul")'
+					style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;" />
+				<button label="Azienda"
+					onClick='Executions.sendRedirect("aggregati.zul")'
+					style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;" />
+				<button label="ATS"
+					onClick='Executions.sendRedirect("aggregati.zul")'
+					style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;" />
+			</div>
 			<!-- Contenuto principale -->
-<div sclass="content-area"
+			<div sclass="content-area"
 				style="flex:1; text-align:center; padding-top:100px;">
-<label value="Benvenuto nel Catalogo Profili"
+				<label value="Benvenuto nel Catalogo Profili"
 					style="color:#7b002c; font-size:48px; font-weight:bold; display:block; margin-bottom:20px;" />
-<label
+				<label
 					value="Seleziona una sezione dal menu laterale per iniziare"
 					style="color:#666; font-size:20px; display:block;" />
-</div>
- 
+			</div>
 			<!-- Sezione ricerca (pannello destro moderno) -->
-<div sclass="search-panel"
-				style="width:300px; background-color:#fafafa; border:1px solid #ddd; border-radius:10px;
-                        padding:20px; box-shadow:0 2px 6px rgba(0,0,0,0.1); display:flex; flex-direction:column;">
-<label value=" Ricerca Avanzata"
+			<div sclass="search-panel"
+				style="width:300px; background-color:#fafafa; border:1px solid #ddd; border-radius:10px; padding:20px; box-shadow:0 2px 6px rgba(0,0,0,0.1); display:flex; flex-direction:column;">
+				<label value=" Ricerca Rapida"
 					style="font-size:20px; font-weight:bold; color:#7b002c; display:block; margin-bottom:20px; text-align:center;" />
- 
 				<vlayout spacing="10px">
-<textbox placeholder="Cerca per nome..."
+					<textbox placeholder="Cerca per nome..."
 						width="100%" />
-<combobox width="100%" placeholder="Categoria">
-<comboitem label="Tutti" />
-<comboitem label="Gestore" />
-<comboitem label="Cliente" />
-<comboitem label="Altro" />
-</combobox>
-<datebox width="100%" placeholder="Data creazione" />
-<hlayout spacing="10px" style="margin-top:10px;">
-<button label="Cerca"
-							style="flex:1; background-color:#7b002c; color:white;
-                                       border:none; padding:8px; border-radius:6px; cursor:pointer; font-weight:bold;" />
-<button label="Reset"
-							style="flex:1; background-color:#6c757d; color:white;
-                                       border:none; padding:8px; border-radius:6px; cursor:pointer; font-weight:bold;" />
-</hlayout>
-</vlayout>
-</div>
-</div>
- 
+					<combobox width="100%" placeholder="Categoria">
+						<comboitem label="Profili" />
+						<comboitem label="Aggregati" />
+					</combobox>
+					<hlayout spacing="10px" style="margin-top:10px;">
+						<button label="Cerca"
+							onClick='Executions.sendRedirect("ricerca.zul")'
+							style="flex:1; background-color:#7b002c; color:white; border:none; padding:8px; border-radius:6px; cursor:pointer; font-weight:bold;" />
+						<button label="Reset"
+							style="flex:1; background-color:#6c757d; color:white; border:none; padding:8px; border-radius:6px; cursor:pointer; font-weight:bold;" />
+					</hlayout>
+				</vlayout>
+			</div>
+		</div>
 	</window>
 </zk>
