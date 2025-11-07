@@ -1,7 +1,7 @@
-<?page title="TARGET - Monte dei Paschi di Siena" contentType="text/html;charset=UTF-8"?>
+<?page title="ATS - Monte dei Paschi di Siena" contentType="text/html;charset=UTF-8"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
 	<window width="100%" height="100%"
-		viewModel="@id('vm') @init('com.nttdata.viewmodel.TargetViewModel')"
+		viewModel="@id('vm') @init('com.nttdata.viewmodel.AtsViewModel')"
 		apply="org.zkoss.bind.BindComposer">
 
 		<style src="/css/home.css" />
@@ -23,7 +23,6 @@
 		<!-- 🧭 Layout principale -->
 		<div sclass="main-layout">
 
-<<<<<<< Updated upstream
 			<!-- 📁 Sidebar -->
 			<div sclass="sidebar">
 				<button label="Profili"
@@ -36,38 +35,15 @@
 					onClick='Executions.sendRedirect("apm.zul")'
 					style="background-color:#6c757d; color:white;" />
 				<button label="Target"
-					onClick='Executions.sendRedirect("target.zul")'
-					style="background-color:#7b002c; color:white;" />
-				<button label="Azienda"
-					onClick='Executions.sendRedirect("azienda.zul")'
-					style="background-color:#6c757d; color:white;" />
-				<button label="ATS"
 					onClick='Executions.sendRedirect("aggregati.zul")'
-					style="background-color:#6c757d; color:white;" />
+					style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;" />
+				<button label="Azienda"
+					onClick='Executions.sendRedirect("aggregati.zul")'
+					style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;" />
+				<button label="ATS"
+					onClick='Executions.sendRedirect("ats.zul")'
+					style="background-color:#7b002c; color:white;" />
 			</div>
-=======
-            <!-- Sidebar -->
-            <div sclass="sidebar">
-                <button label="Profili"
-                        onClick='Executions.sendRedirect("profili.zul")'
-                        style="background-color:#6c757d; color:white;" />
-                <button label="Aggregati"
-                        onClick='Executions.sendRedirect("aggregati.zul")'
-                        style="background-color:#6c757d; color:white;" />
-                <button label="APM"
-                        onClick='Executions.sendRedirect("apm.zul")'
-                        style="background-color:#6c757d; color:white;" />
-                <button label="Target"
-                        onClick='Executions.sendRedirect("target.zul")'
-                        style="background-color:#7b002c; color:white;" />
-                <button label="Azienda"
-                        onClick='Executions.sendRedirect("azienda.zul")'
-                        style="background-color:#6c757d; color:white;" />
-                <button label="ATS"
-                        onClick='Executions.sendRedirect("ats.zul")'
-                        style="background-color:#6c757d; color:white;" />
-            </div>
->>>>>>> Stashed changes
 
 			<!-- 📋 Contenuto principale -->
 			<div sclass="content-area">
@@ -82,14 +58,10 @@
 					<combobox value="@bind(vm.searchColumn)"
 						width="150px" readonly="true" style="margin-right:10px;">
 						<comboitem label="Tutti" value="Tutti" />
-						<comboitem label="NOME_TARGET"
-							value="NOME_TARGET" />
-						<comboitem label="ACCOUNT_AUTOMATICO"
-							value="ACCOUNT_AUTOMATICO" />
-						<comboitem label="TEMPO_ATTIVAZIONE"
-							value="TEMPO_ATTIVAZIONE" />
-						<comboitem label="SYSTEM_OWNER"
-							value="SYSTEM_OWNER" />
+						<comboitem label="ID_ATS" value="ID_ATS" />
+						<comboitem label="ATS_NOME" value="ATS_NOME" />
+						<comboitem label="ID_SESSION"
+							value="ID_SESSION" />
 					</combobox>
 
 					<textbox placeholder="Inserisci testo da cercare..."
@@ -97,7 +69,7 @@
 						style="margin-right:10px;" />
 
 					<button label="Cerca"
-						onClick="@command('filterTarget')"
+						onClick="@command('filterAts')"
 						style="background-color:#7b002c; color:white;
                                border:none; padding:5px 15px; border-radius:4px; font-weight:500;" />
 					<button label="Pulisci"
@@ -112,7 +84,7 @@
 					<div sclass="table-header">
 						<hbox align="center" pack="stretch"
 							width="100%">
-							<label value="Elenco Target"
+							<label value="Elenco ATS"
 								style="font-weight:bold; font-size:14px;" />
 
 							<!-- Selettore righe per pagina -->
@@ -159,37 +131,48 @@
 						</hbox>
 					</div>
 
-					<!-- 📊 Tabella TARGET -->
+					<!-- 📊 Tabella ATS -->
 					<div id="tableScrollWrapper"
 						sclass="table-scroll-wrapper"
 						style="max-height:550px; overflow-y:auto;">
-						<grid id="gridTarget"
-							model="@bind(vm.filteredTarget)"
+
+						<grid id="gridAts" model="@bind(vm.filteredAts)"
 							emptyMessage="Nessun record trovato"
-							selection="@bind(vm.selectedTarget)" sclass="wide-grid"
+							selection="@bind(vm.selectedAts)" sclass="wide-grid"
 							width="100%">
 
 							<columns sizable="false">
-								<column label="NOME_TARGET" width="25%"
+								<column label="ID_ATS" width="15%"
 									style="background-color:#7b002c; color:white;" />
-								<column label="ACCOUNT_AUTOMATICO"
-									width="20%" style="background-color:#7b002c; color:white;" />
-								<column label="TEMPO_ATTIVAZIONE"
-									width="20%" style="background-color:#7b002c; color:white;" />
-								<column label="SYSTEM_OWNER" width="20%"
+								<column label="ATS_NOME" width="35%"
 									style="background-color:#7b002c; color:white;" />
+								<column label="CREATION_DATE"
+									width="20%" style="background-color:#7b002c; color:white;" />
+								<column label="UPDATE_DATE" width="20%"
+									style="background-color:#7b002c; color:white;" />
+								<column label="ID_SESSION" width="15%"
+									style="background-color:#7b002c; color:white;" />
+
 							</columns>
 
 							<template name="model">
 								<row>
+
+									<label value="@load(each.idAts)" />
+									<label value="@load(each.atsNome)" />
 									<label
-										value="@load(each.nomeTarget)" />
+										value="@load(each.creationDate)" />
 									<label
-										value="@load(each.accountAutomatico)" />
+										value="@load(each.updateDate)" />
 									<label
-										value="@load(each.tempoAttivazione)" />
-									<label
-										value="@load(each.systemOwner)" />
+										value="@load(each.idSession)" />
+
+									<hbox spacing="10px" align="center"
+										onClick="event.stopPropagation();">
+
+
+
+									</hbox>
 								</row>
 							</template>
 
@@ -218,9 +201,8 @@
 						</hbox>
 					</div>
 
-				</div><!-- chiusura table-container -->
-			</div><!-- chiusura content-area -->
+				</div>
+			</div>
 		</div>
-		<!-- chiusura main-layout -->
 	</window>
 </zk>
