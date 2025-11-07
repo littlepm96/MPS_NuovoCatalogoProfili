@@ -38,7 +38,7 @@
 					onClick='Executions.sendRedirect("target.zul")'
 					style="background-color:#7b002c; color:white;" />
 				<button label="Azienda"
-					onClick='Executions.sendRedirect("aggregati.zul")'
+					onClick='Executions.sendRedirect("azienda.zul")'
 					style="background-color:#6c757d; color:white;" />
 				<button label="ATS"
 					onClick='Executions.sendRedirect("aggregati.zul")'
