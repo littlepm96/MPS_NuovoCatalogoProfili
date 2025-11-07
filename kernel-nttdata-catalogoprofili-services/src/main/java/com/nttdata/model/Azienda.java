@@ -8,6 +8,12 @@ public class Azienda {
     private Date creationDate;
     private Date updateDate;
 
+    // =========================
+    // CAMPi PER LA RICERCA/PAGINAZIONE (non persistenti)
+    // =========================
+    private transient String searchText;
+    private transient String searchColumn = "Tutti";
+
     public Azienda() {}
 
     public int getIdAzienda() {
@@ -40,6 +46,25 @@ public class Azienda {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    // =========================
+    // GETTER/SETTER PER RICERCA
+    // =========================
+    public String getSearchText() {
+        return searchText;
+    }
+
+    public void setSearchText(String searchText) {
+        this.searchText = searchText;
+    }
+
+    public String getSearchColumn() {
+        return searchColumn;
+    }
+
+    public void setSearchColumn(String searchColumn) {
+        this.searchColumn = searchColumn;
     }
 
     @Override

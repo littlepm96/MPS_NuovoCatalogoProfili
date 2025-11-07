@@ -3,156 +3,242 @@ package com.nttdata.viewmodel;
 import com.nttdata.model.Target;
 import com.nttdata.service.TargetService;
 import org.zkoss.bind.annotation.*;
-
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zul.ListModelList;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 public class TargetViewModel {
 
-    // ==============================
-    // SERVICES & DATA
-    // ==============================
-    private TargetService targetService = new TargetService(); // ✅ istanza diretta
+    private TargetService targetService = new TargetService();
 
-    private List<Target> allTargets = new ArrayList<>();
-    private List<Target> filteredTarget = new ArrayList<>();
+    private List<Target> allTargets; // Lista originale dal DB
+    private List<Target> workingTargets; // Lista filtrata di lavoro
+    private ListModelList<Target> filteredTarget; // Lista visibile nella grid
+
     private Target selectedTarget;
 
-    // ==============================
-    // FILTRI E PAGINAZIONE
-    // ==============================
     private String searchText = "";
     private String searchColumn = "Tutti";
+
+    private String messaggio = "Benvenuto nella gestione Target";
+
+    // Paginazione
     private int pageSize = 10;
     private int currentPage = 0;
+    private int totalRecords = 0;
+    private int totalPages = 0;
 
-    // ==============================
-    // MESSAGGI DI STATO
-    // ==============================
-    private String messaggio = "";
-    private String recordInfo = "";
-    private String pageInfo = "";
-    private boolean firstPage = true;
-    private boolean lastPage = false;
-
-    // ==============================
+    // =========================
     // INIT
-    // ==============================
+    // =========================
     @Init
     public void init() {
         loadTargets();
-        updatePagination();
     }
 
-    // ==============================
-    // METODO PRINCIPALE: CARICA TARGET
-    // ==============================
+    // =========================
+    // CARICA TUTTI I TARGET DAL DB
+    // =========================
+    @Command
+    @NotifyChange({ "filteredTarget", "totalRecords", "totalPages", "currentPage", "recordInfo", "pageInfo" })
     public void loadTargets() {
         allTargets = targetService.getAllTargets();
-        System.out.println("Target caricati: " + allTargets.size());
 
-        filteredTarget = new ArrayList<>(allTargets);
-
-        if (allTargets.isEmpty()) {
-            messaggio = "⚠️ Nessun record trovato nella tabella TARGET.";
+        if (allTargets != null && !allTargets.isEmpty()) {
+            workingTargets = new ArrayList<>(allTargets);
+            totalRecords = workingTargets.size();
+            calculateTotalPages();
+            updatePagedList();
         } else {
-            messaggio = "Totale Target: " + allTargets.size();
+            allTargets = new ArrayList<>();
+            workingTargets = new ArrayList<>();
+            filteredTarget = new ListModelList<>();
+            totalRecords = 0;
+            totalPages = 0;
         }
-    }
-
-    // ==============================
-    // FILTRI DI RICERCA
-    // ==============================
-    @Command
-    @NotifyChange({"filteredTarget", "recordInfo", "pageInfo"})
-    public void filterTarget() {
-        filteredTarget = new ArrayList<>();
-
-        for (Target t : allTargets) {
-            boolean match = switch (searchColumn) {
-                case "NOME_TARGET" -> t.getNomeTarget() != null && t.getNomeTarget().toLowerCase().contains(searchText.toLowerCase());
-                case "ACCOUNT_AUTOMATICO" -> t.getAccountAutomatico() != null && t.getAccountAutomatico().toLowerCase().contains(searchText.toLowerCase());
-                case "TEMPO_ATTIVAZIONE" -> t.getTempoAttivazione() != null && t.getTempoAttivazione().toLowerCase().contains(searchText.toLowerCase());
-                case "SYSTEM_OWNER" -> t.getSystemOwner() != null && t.getSystemOwner().toLowerCase().contains(searchText.toLowerCase());
-                default -> t.toString().toLowerCase().contains(searchText.toLowerCase());
-            };
-
-            if (match) filteredTarget.add(t);
-        }
-
         currentPage = 0;
-        updatePagination();
     }
 
+    // =========================
+    // AGGIORNA LA LISTA PAGINATA
+    // =========================
+    private void updatePagedList() {
+        if (workingTargets == null || workingTargets.isEmpty()) {
+            filteredTarget = new ListModelList<>();
+            return;
+        }
+
+        int fromIndex = currentPage * pageSize;
+        int toIndex = Math.min(fromIndex + pageSize, totalRecords);
+
+        filteredTarget = new ListModelList<>(workingTargets.subList(fromIndex, toIndex));
+    }
+
+    // =========================
+    // CALCOLA TOTALE PAGINE
+    // =========================
+    private void calculateTotalPages() {
+        totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+        if (totalPages == 0) totalPages = 1;
+    }
+
+    // =========================
+    // FILTRA TARGET IN BASE A TESTO E COLONNA
+    // =========================
     @Command
-    @NotifyChange({"filteredTarget", "searchText", "searchColumn", "recordInfo", "pageInfo"})
+    @NotifyChange({ "filteredTarget", "totalRecords", "totalPages", "currentPage", "recordInfo", "pageInfo" })
+    public void filterTarget() {
+        if (allTargets == null || allTargets.isEmpty()) {
+            workingTargets = new ArrayList<>();
+            totalRecords = 0;
+            currentPage = 0;
+            calculateTotalPages();
+            updatePagedList();
+            return;
+        }
+
+        String lowerSearch = (searchText != null) ? searchText.toLowerCase().trim() : "";
+
+        if (lowerSearch.isEmpty()) {
+            workingTargets = new ArrayList<>(allTargets);
+            totalRecords = workingTargets.size();
+            currentPage = 0;
+            calculateTotalPages();
+            updatePagedList();
+            return;
+        }
+
+        List<Target> result;
+        switch (searchColumn) {
+            case "NOME_TARGET":
+                result = allTargets.stream()
+                        .filter(t -> t.getNomeTarget() != null && t.getNomeTarget().toLowerCase().contains(lowerSearch))
+                        .collect(Collectors.toList());
+                break;
+            case "ACCOUNT_AUTOMATICO":
+                result = allTargets.stream()
+                        .filter(t -> t.getAccountAutomatico() != null && t.getAccountAutomatico().toLowerCase().contains(lowerSearch))
+                        .collect(Collectors.toList());
+                break;
+            case "TEMPO_ATTIVAZIONE":
+                result = allTargets.stream()
+                        .filter(t -> t.getTempoAttivazione() != null && t.getTempoAttivazione().toLowerCase().contains(lowerSearch))
+                        .collect(Collectors.toList());
+                break;
+            case "SYSTEM_OWNER":
+                result = allTargets.stream()
+                        .filter(t -> t.getSystemOwner() != null && t.getSystemOwner().toLowerCase().contains(lowerSearch))
+                        .collect(Collectors.toList());
+                break;
+            default: // "Tutti"
+                result = allTargets.stream()
+                        .filter(t -> (t.getNomeTarget() != null && t.getNomeTarget().toLowerCase().contains(lowerSearch))
+                                || (t.getAccountAutomatico() != null && t.getAccountAutomatico().toLowerCase().contains(lowerSearch))
+                                || (t.getTempoAttivazione() != null && t.getTempoAttivazione().toLowerCase().contains(lowerSearch))
+                                || (t.getSystemOwner() != null && t.getSystemOwner().toLowerCase().contains(lowerSearch)))
+                        .collect(Collectors.toList());
+                break;
+        }
+
+        workingTargets = result;
+        totalRecords = result.size();
+        currentPage = 0;
+        calculateTotalPages();
+        updatePagedList();
+    }
+
+    // =========================
+    // PULISCE LA RICERCA
+    // =========================
+    @Command
+    @NotifyChange({ "filteredTarget", "searchText", "searchColumn", "totalRecords", "totalPages", "currentPage", "recordInfo", "pageInfo" })
     public void clearSearch() {
         searchText = "";
         searchColumn = "Tutti";
-        filteredTarget = new ArrayList<>(allTargets);
+        workingTargets = new ArrayList<>(allTargets);
+        totalRecords = workingTargets.size();
         currentPage = 0;
-        updatePagination();
+        calculateTotalPages();
+        updatePagedList();
     }
 
-    // ==============================
-    // PAGINAZIONE
-    // ==============================
+    // =========================
+    // CAMBIA DIMENSIONE PAGINA
+    // =========================
     @Command
-    @NotifyChange({"filteredTarget", "recordInfo", "pageInfo", "firstPage", "lastPage"})
-    public void nextPage() {
-        if ((currentPage + 1) * pageSize < filteredTarget.size()) currentPage++;
-        updatePagination();
-    }
-
-    @Command
-    @NotifyChange({"filteredTarget", "recordInfo", "pageInfo", "firstPage", "lastPage"})
-    public void previousPage() {
-        if (currentPage > 0) currentPage--;
-        updatePagination();
-    }
-
-    @Command
-    @NotifyChange({"filteredTarget", "recordInfo", "pageInfo", "firstPage", "lastPage"})
-    public void firstPage() {
-        currentPage = 0;
-        updatePagination();
-    }
-
-    @Command
-    @NotifyChange({"filteredTarget", "recordInfo", "pageInfo", "firstPage", "lastPage"})
-    public void lastPage() {
-        currentPage = (filteredTarget.size() - 1) / pageSize;
-        updatePagination();
-    }
-
-    @Command
-    @NotifyChange({"filteredTarget", "recordInfo", "pageInfo", "firstPage", "lastPage"})
+    @NotifyChange({ "filteredTarget", "totalPages", "currentPage", "pageSize", "recordInfo", "pageInfo" })
     public void changePageSize(@BindingParam("size") int size) {
         pageSize = size;
         currentPage = 0;
-        updatePagination();
+        calculateTotalPages();
+        updatePagedList();
     }
 
-    private void updatePagination() {
-        int start = currentPage * pageSize;
-        int end = Math.min(start + pageSize, filteredTarget.size());
-
-        List<Target> pageData = filteredTarget.subList(start, end);
-        filteredTarget = new ArrayList<>(pageData);
-
-        firstPage = currentPage == 0;
-        lastPage = end >= allTargets.size();
-
-        recordInfo = "Mostrati " + (start + 1) + " - " + end + " di " + allTargets.size() + " record";
-        pageInfo = "Pagina " + (currentPage + 1) + " di " + ((allTargets.size() + pageSize - 1) / pageSize);
+    // =========================
+    // NAVIGAZIONE
+    // =========================
+    @Command
+    @NotifyChange({ "filteredTarget", "currentPage", "recordInfo", "pageInfo", "firstPage", "lastPage" })
+    public void firstPage() {
+        currentPage = 0;
+        updatePagedList();
     }
 
-    // ==============================
-    // GETTER & SETTER
-    // ==============================
-    public List<Target> getFilteredTarget() {
+    @Command
+    @NotifyChange({ "filteredTarget", "currentPage", "recordInfo", "pageInfo", "firstPage", "lastPage" })
+    public void previousPage() {
+        if (currentPage > 0) {
+            currentPage--;
+            updatePagedList();
+        }
+    }
+
+    @Command
+    @NotifyChange({ "filteredTarget", "currentPage", "recordInfo", "pageInfo", "firstPage", "lastPage" })
+    public void nextPage() {
+        if (currentPage < totalPages - 1) {
+            currentPage++;
+            updatePagedList();
+        }
+    }
+
+    @Command
+    @NotifyChange({ "filteredTarget", "currentPage", "recordInfo", "pageInfo", "firstPage", "lastPage" })
+    public void lastPage() {
+        currentPage = totalPages - 1;
+        updatePagedList();
+    }
+
+    // =========================
+    // AZIONI SU TARGET
+    // =========================
+    @Command
+    public void openEdit(@BindingParam("nomeTarget") String nomeTarget) {
+        if (nomeTarget != null && !nomeTarget.isEmpty()) {
+            Executions.sendRedirect("modificaTarget.zul?nomeTarget=" + nomeTarget);
+        } else {
+            Clients.showNotification("Nome Target non valido!", "error", null, "middle_center", 2000);
+        }
+    }
+
+    @Command
+    public void openDetails(@BindingParam("nomeTarget") String nomeTarget) {
+        if (nomeTarget != null && !nomeTarget.isEmpty()) {
+            Executions.sendRedirect("dettagliTarget.zul?nomeTarget=" + nomeTarget);
+        } else {
+            Clients.showNotification("Nome Target non valido!", "error", null, "middle_center", 2000);
+        }
+    }
+
+
+    // =========================
+    // GETTER E SETTER
+    // =========================
+    public ListModelList<Target> getFilteredTarget() {
         return filteredTarget;
     }
 
@@ -184,23 +270,43 @@ public class TargetViewModel {
         return messaggio;
     }
 
-    public String getRecordInfo() {
-        return recordInfo;
-    }
-
-    public String getPageInfo() {
-        return pageInfo;
-    }
-
     public int getPageSize() {
         return pageSize;
     }
 
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public int getTotalRecords() {
+        return totalRecords;
+    }
+
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+    public int getFromRecord() {
+        return totalRecords == 0 ? 0 : (currentPage * pageSize) + 1;
+    }
+
+    public int getToRecord() {
+        return Math.min((currentPage + 1) * pageSize, totalRecords);
+    }
+
     public boolean isFirstPage() {
-        return firstPage;
+        return currentPage == 0;
     }
 
     public boolean isLastPage() {
-        return lastPage;
+        return currentPage >= totalPages - 1;
+    }
+
+    public String getRecordInfo() {
+        return getFromRecord() + " - " + getToRecord() + " di " + totalRecords + " record";
+    }
+
+    public String getPageInfo() {
+        return "Pagina " + (currentPage + 1) + " di " + totalPages;
     }
 }
