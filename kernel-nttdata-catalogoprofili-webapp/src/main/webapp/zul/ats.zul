@@ -1,7 +1,7 @@
-<?page title="APM - Monte dei Paschi di Siena" contentType="text/html;charset=UTF-8"?>
+<?page title="ATS - Monte dei Paschi di Siena" contentType="text/html;charset=UTF-8"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
 	<window width="100%" height="100%"
-		viewModel="@id('vm') @init('com.nttdata.viewmodel.ApmViewModel')"
+		viewModel="@id('vm') @init('com.nttdata.viewmodel.AtsViewModel')"
 		apply="org.zkoss.bind.BindComposer">
 
 		<style src="/css/home.css" />
@@ -26,21 +26,20 @@
 			<!-- 📁 Sidebar -->
 			<div sclass="sidebar">
 				<button label="Profili"
-					onClick='Executions.sendRedirect("profili.zul")' style="background-color:#6c757d; color:white;"  />
+					onClick='Executions.sendRedirect("profili.zul")' style="background-color:#6c757d; color:white;" />
 				<button label="Aggregati"
-					onClick='Executions.sendRedirect("aggregati.zul")' style="background-color:#6c757d; color:white;;" />
+					onClick='Executions.sendRedirect("aggregati.zul")' style="background-color:#6c757d; color:white;" />
 				<button label="APM"
-					onClick='Executions.sendRedirect("apm.zul")'
-					style="background-color:#7b002c; color:white;" />
+					onClick='Executions.sendRedirect("apm.zul")' style="background-color:#6c757d; color:white;" />
 				<button label="Target"
-					onClick='Executions.sendRedirect("target.zul")'
+					onClick='Executions.sendRedirect("aggregati.zul")'
 					style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;" />
 				<button label="Azienda"
-					onClick='Executions.sendRedirect("azienda.zul")'
+					onClick='Executions.sendRedirect("aggregati.zul")'
 					style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;" />
 				<button label="ATS"
 					onClick='Executions.sendRedirect("ats.zul")'
-					style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;" />
+					style="background-color:#7b002c; color:white;" />
 			</div>
 
 			<!-- 📋 Contenuto principale -->
@@ -56,12 +55,9 @@
 					<combobox value="@bind(vm.searchColumn)"
 						width="150px" readonly="true" style="margin-right:10px;">
 						<comboitem label="Tutti" value="Tutti" />
-						<comboitem label="APP" value="APP" />
-						<comboitem label="DESCRIZIONE"
-							value="DESCRIZIONE" />
-						<comboitem label="STATO" value="STATO" />
-						<comboitem label="COD_STRUTTURA_CHANGE"
-							value="COD_STRUTTURA_CHANGE" />
+						<comboitem label="ID_ATS" value="ID_ATS" />
+						<comboitem label="ATS_NOME" value="ATS_NOME" />
+						<comboitem label="ID_SESSION" value="ID_SESSION" />
 					</combobox>
 
 					<textbox placeholder="Inserisci testo da cercare..."
@@ -69,7 +65,7 @@
 						style="margin-right:10px;" />
 
 					<button label="Cerca"
-						onClick="@command('filterApm')"
+						onClick="@command('filterAts')"
 						style="background-color:#7b002c; color:white;
                                border:none; padding:5px 15px; border-radius:4px; font-weight:500;" />
 					<button label="Pulisci"
@@ -84,7 +80,7 @@
 					<div sclass="table-header">
 						<hbox align="center" pack="stretch"
 							width="100%">
-							<label value="Elenco Applicazioni APM"
+							<label value="Elenco ATS"
 								style="font-weight:bold; font-size:14px;" />
 
 							<!-- Selettore righe per pagina -->
@@ -131,38 +127,56 @@
 						</hbox>
 					</div>
 
-					<!-- 📊 Tabella APM -->
+					<!-- 📊 Tabella ATS -->
 					<div id="tableScrollWrapper"
 						sclass="table-scroll-wrapper"
 						style="max-height:550px; overflow-y:auto;">
 
-						<grid id="gridApm" model="@bind(vm.filteredApm)"
+						<grid id="gridAts" model="@bind(vm.filteredAts)"
 							emptyMessage="Nessun record trovato"
-							selection="@bind(vm.selectedApm)" sclass="wide-grid"
+							selection="@bind(vm.selectedAts)" sclass="wide-grid"
 							width="100%">
 
 							<columns sizable="false">
-								<column label="APP" width="20%"
+								<column label="ID_ATS" width="15%"
 									style="background-color:#7b002c; color:white;" />
-								<column label="DESCRIZIONE" width="35%"
+								<column label="ATS_NOME" width="35%"
 									style="background-color:#7b002c; color:white;" />
-								<column label="STATO" width="15%"
+								<column label="CREATION_DATE" width="20%"
 									style="background-color:#7b002c; color:white;" />
-								<column label="COD_STRUTTURA_CHANGE"
-									width="20%" style="background-color:#7b002c; color:white;" />
+								<column label="UPDATE_DATE" width="20%"
+									style="background-color:#7b002c; color:white;" />
+								<column label="ID_SESSION" width="15%"
+									style="background-color:#7b002c; color:white;" />
+								<column label="Azioni" width="10%"
+									style="background-color:#7b002c; color:white;" />
 							</columns>
 
 							<template name="model">
 								<row
-									onClick="@command('openDetails', app=each.app)"
+									onClick="@command('openDetails', idAts=each.idAts)"
 									style="cursor:pointer;"
 									tooltiptext="Clicca per vedere i dettagli">
-									<label value="@load(each.app)" />
-									<label
-										value="@load(each.descrizione)" />
-									<label value="@load(each.stato)" />
-									<label
-										value="@load(each.codStrutturaChange)" />
+									<label value="@load(each.idAts)" />
+									<label value="@load(each.atsNome)" />
+									<label value="@load(each.creationDate)" />
+									<label value="@load(each.updateDate)" />
+									<label value="@load(each.idSession)" />
+
+									<hbox spacing="10px" align="center"
+										onClick="event.stopPropagation();">
+										<!-- Icona Modifica -->
+										<image src="/images/edit-4.png"
+											height="24px"
+											onClick="@command('openEdit', idAts=each.idAts)"
+											style="cursor:pointer;" tooltiptext="Modifica ATS" />
+
+										<!-- Icona Elimina -->
+										<image src="/images/trash2.png"
+											height="24px"
+											onClick="@command('deleteAts', param=each)"
+											style="cursor:pointer;" tooltiptext="Elimina ATS" />
+									</hbox>
 								</row>
 							</template>
 
