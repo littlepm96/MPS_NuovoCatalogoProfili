@@ -1,6 +1,5 @@
 <?page title="Dettagli Profilo - Monte dei Paschi di Siena" contentType="text/html;charset=UTF-8"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-
 	<window width="100%" height="100%"
 		viewModel="@id('vm') @init('com.nttdata.viewmodel.DettagliProfiloViewModel')"
 		apply="org.zkoss.bind.BindComposer">
@@ -47,101 +46,106 @@
 			<div sclass="content-area">
 				<vlayout spacing="15px" width="80%"
 					style="margin:20px auto;">
-
 					<label value="@load(vm.messaggio)"
 						style="font-weight:bold; font-size:20px; color:#333;" />
 
-					<!-- Mostra tutti i campi -->
-					<vlayout spacing="10px" width="100%">
+					<!-- Campi profilo allineati -->
+					<grid width="100%">
+						<columns>
+							<column width="200px" />
+							<column />
+						</columns>
+						<rows>
+							<row>
+								<label value="Target:" />
+								<textbox
+									value="@load(vm.profile.target)" hflex="1" readonly="true" />
+							</row>
+							<row>
+								<label value="Ent_code:" />
+								<textbox
+									value="@load(vm.profile.entCode)" hflex="1" readonly="true" />
+							</row>
+							<row>
+								<label value="Ent_value:" />
+								<textbox
+									value="@load(vm.profile.entValue)" hflex="1" readonly="true" />
+							</row>
+							<row>
+								<label value="Gruppo:" />
+								<textbox
+									value="@load(vm.profile.gruppo)" hflex="1" readonly="true" />
+							</row>
+							<row>
+								<label value="Description:" />
+								<textbox
+									value="@load(vm.profile.description)" hflex="1"
+									readonly="true" />
+							</row>
+							<row>
+								<label value="App Instance Key:" />
+								<textbox
+									value="@load(vm.profile.appInstanceKey)" hflex="1"
+									readonly="true" />
+							</row>
+							<row>
+								<label value="APM:" />
+								<textbox value="@load(vm.profile.apm)"
+									hflex="1" readonly="true" />
+							</row>
+							<row>
+								<label value="Grant Type:" />
+								<textbox
+									value="@load(vm.profile.grantType)" hflex="1" readonly="true" />
+							</row>
+							<row>
+								<label value="Gadis Tecnologia:" />
+								<textbox
+									value="@load(vm.profile.gadisTecnologia)" hflex="1"
+									readonly="true" />
+							</row>
+							<row>
+								<label value="Gadis Approvatore:" />
+								<textbox
+									value="@load(vm.profile.gadisApprovatore)" hflex="1"
+									readonly="true" />
+							</row>
+							<row>
+								<label value="ATS:" />
+								<textbox value="@load(vm.profile.ats)"
+									hflex="1" readonly="true" />
+							</row>
+							<row>
+								<label value="App Instance Key 1:" />
+								<textbox
+									value="@load(vm.profile.appInstanceKey1)" hflex="1"
+									readonly="true" />
+							</row>
+							<row>
+								<label value="Ent List Key:" />
+								<textbox
+									value="@load(vm.profile.entListKey)" hflex="1" readonly="true" />
+							</row>
+						</rows>
+					</grid>
 
-						<hlayout spacing="10px" width="100%">
-							<label value="Target:" width="200px" />
-							<textbox value="@load(vm.profile.target)"
-								hflex="1" readonly="true" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="Ent_code:" width="200px" />
-							<textbox value="@load(vm.profile.entCode)"
-								hflex="1" readonly="true" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="Ent_value:" width="200px" />
-							<textbox value="@load(vm.profile.entValue)"
-								hflex="1" readonly="true" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="Gruppo:" width="200px" />
-							<textbox value="@load(vm.profile.gruppo)"
-								hflex="1" readonly="true" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="Description:" width="200px" />
-							<textbox
-								value="@load(vm.profile.description)" hflex="1" readonly="true" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="App Instance Key:"
-								width="200px" />
-							<textbox
-								value="@load(vm.profile.appInstanceKey)" hflex="1"
-								readonly="true" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="APM:" width="200px" />
-							<textbox value="@load(vm.profile.apm)"
-								hflex="1" readonly="true" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="Grant Type:" width="200px" />
-							<textbox value="@load(vm.profile.grantType)"
-								hflex="1" readonly="true" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="Gadis Tecnologia:"
-								width="200px" />
-							<textbox
-								value="@load(vm.profile.gadisTecnologia)" hflex="1"
-								readonly="true" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="Gadis Approvatore:"
-								width="200px" />
-							<textbox
-								value="@load(vm.profile.gadisApprovatore)" hflex="1"
-								readonly="true" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="ATS:" width="200px" />
-							<textbox value="@load(vm.profile.ats)"
-								hflex="1" readonly="true" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="App Instance Key 1:"
-								width="200px" />
-							<textbox
-								value="@load(vm.profile.appInstanceKey1)" hflex="1"
-								readonly="true" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="Ent List Key:" width="200px" />
-							<textbox
-								value="@load(vm.profile.entListKey)" hflex="1" readonly="true" />
-						</hlayout>
-
-					</vlayout>
-
-					<!-- Pulsante home -->
+					<!-- Pulsanti azione -->
 					<hlayout spacing="15px"
 						style="justify-content:flex-end; width:100%;">
+						<button label="Modifica"
+							onClick="@command('goToModifica', entCode=vm.profile.entCode)"
+							style="background-color:#6c757d;color:white;border:none;
+           padding:10px 25px;border-radius:5px;font-weight:bold;" />
+
+
 						<button label="Torna ai Profili"
 							onClick="@command('goBack')"
-							style="background-color:#7b002c;color:white;border:none;padding:10px 25px;border-radius:5px;font-weight:bold;" />
+							style="background-color:#7b002c;color:white;border:none;
+               padding:10px 25px;border-radius:5px;font-weight:bold;" />
 					</hlayout>
 
 				</vlayout>
 			</div>
 		</div>
-
 	</window>
-
 </zk>
