@@ -7,7 +7,7 @@
 
 		<style src="/css/home.css" />
 
-		<!-- Header -->
+		<!-- 🔝 Header -->
 		<div sclass="navbar">
 			<hbox>
 				<image id="logoImg" src="/images/logo.png" height="45px"
@@ -20,11 +20,11 @@
 			</hbox>
 		</div>
 
+		<!-- 🧭 Layout principale -->
 		<div sclass="main-layout">
 
-			<!-- Sidebar -->
+			<!-- 📁 Sidebar -->
 			<div sclass="sidebar">
-
 				<button label="Profili"
 					onClick='Executions.sendRedirect("profili.zul")' />
 				<button label="Aggregati"
@@ -44,104 +44,91 @@
 					style="width:100%; margin-bottom:12px;background-color:#6c757d; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;" />
 			</div>
 
-			<!-- Contenuto principale -->
+			<!-- 📋 Contenuto principale -->
 			<div sclass="content-area">
 				<vlayout spacing="15px" width="80%"
 					style="margin:20px auto;">
 
 					<label value="@load(vm.messaggio)"
-						style="color:red; font-weight:bold; font-size:16px;" />
+						style="color:#7b002c; font-weight:bold; font-size:18px;" />
 
-					<!-- Form modificabile -->
-					<vlayout spacing="10px" width="100%">
+					<!-- 🧾 Form modificabile allineato -->
+					<grid width="100%">
+						<columns>
+							<column width="220px" />
+							<column />
+						</columns>
+						<rows>
+							<row>
+								<label value="Target:" />
+								<textbox value="@bind(vm.profile.target)" hflex="1" />
+							</row>
+							<row>
+								<label value="Ent_code:" />
+								<textbox value="@bind(vm.profile.entCode)" hflex="1" readonly="true" />
+							</row>
+							<row>
+								<label value="Ent_value:" />
+								<textbox value="@bind(vm.profile.entValue)" hflex="1" />
+							</row>
+							<row>
+								<label value="Gruppo:" />
+								<textbox value="@bind(vm.profile.gruppo)" hflex="1" />
+							</row>
+							<row>
+								<label value="Description:" />
+								<textbox value="@bind(vm.profile.description)" hflex="1" />
+							</row>
+							<row>
+								<label value="App Instance Key:" />
+								<textbox value="@bind(vm.profile.appInstanceKey)" hflex="1" />
+							</row>
+							<row>
+								<label value="APM:" />
+								<textbox value="@bind(vm.profile.apm)" hflex="1" />
+							</row>
+							<row>
+								<label value="Grant Type:" />
+								<textbox value="@bind(vm.profile.grantType)" hflex="1" />
+							</row>
+							<row>
+								<label value="Gadis Tecnologia:" />
+								<textbox value="@bind(vm.profile.gadisTecnologia)" hflex="1" />
+							</row>
+							<row>
+								<label value="Gadis Approvatore:" />
+								<textbox value="@bind(vm.profile.gadisApprovatore)" hflex="1" />
+							</row>
+							<row>
+								<label value="ATS:" />
+								<textbox value="@bind(vm.profile.ats)" hflex="1" />
+							</row>
+							<row>
+								<label value="App Instance Key 1:" />
+								<textbox value="@bind(vm.profile.appInstanceKey1)" hflex="1" />
+							</row>
+							<row>
+								<label value="Ent List Key:" />
+								<textbox value="@bind(vm.profile.entListKey)" hflex="1" />
+							</row>
+						</rows>
+					</grid>
 
-						<hlayout spacing="10px" width="100%">
-							<label value="Target:" width="200px" />
-							<textbox value="@bind(vm.profile.target)"
-								hflex="1" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="Ent_code:" width="200px" />
-							<textbox value="@bind(vm.profile.entCode)"
-								hflex="1" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="Ent_value:" width="200px" />
-							<textbox value="@bind(vm.profile.entValue)"
-								hflex="1" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="Gruppo:" width="200px" />
-							<textbox value="@bind(vm.profile.gruppo)"
-								hflex="1" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="Description:" width="200px" />
-							<textbox
-								value="@bind(vm.profile.description)" hflex="1" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="App Instance Key:"
-								width="200px" />
-							<textbox
-								value="@bind(vm.profile.appInstanceKey)" hflex="1" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="APM:" width="200px" />
-							<textbox value="@bind(vm.profile.apm)"
-								hflex="1" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="Grant Type:" width="200px" />
-							<textbox value="@bind(vm.profile.grantType)"
-								hflex="1" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="Gadis Tecnologia:"
-								width="200px" />
-							<textbox
-								value="@bind(vm.profile.gadisTecnologia)" hflex="1" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="Gadis Approvatore:"
-								width="200px" />
-							<textbox
-								value="@bind(vm.profile.gadisApprovatore)" hflex="1" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="ATS:" width="200px" />
-							<textbox value="@bind(vm.profile.ats)"
-								hflex="1" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="App Instance Key 1:"
-								width="200px" />
-							<textbox
-								value="@bind(vm.profile.appInstanceKey1)" hflex="1" />
-						</hlayout>
-						<hlayout spacing="10px" width="100%">
-							<label value="Ent List Key:" width="200px" />
-							<textbox
-								value="@bind(vm.profile.entListKey)" hflex="1" />
-						</hlayout>
-
-					</vlayout>
-
-					<!-- Pulsanti -->
-					<hlayout spacing="15px"
-						style="justify-content:flex-end; width:100%;">
+					<!-- 🔘 Pulsanti azione -->
+					<hlayout spacing="15px" style="justify-content:flex-end; width:100%;">
 						<button label="Salva"
 							onClick="@command('saveChanges')"
-							style="background-color:#7b002c;color:white;border:none;padding:10px 25px;border-radius:5px;font-weight:bold;" />
+							style="background-color:#7b002c;color:white;border:none;
+								   padding:10px 25px;border-radius:5px;font-weight:bold;" />
 						<button label="Annulla"
 							onClick='Executions.sendRedirect("profili.zul")'
-							style="background-color:#6c757d;color:white;border:none;padding:10px 25px;border-radius:5px;font-weight:bold;" />
+							style="background-color:#6c757d;color:white;border:none;
+								   padding:10px 25px;border-radius:5px;font-weight:bold;" />
 					</hlayout>
 
 				</vlayout>
 			</div>
 		</div>
-
 	</window>
 
 </zk>

@@ -37,6 +37,16 @@ public class DettagliProfiloViewModel {
     public void goBack() {
         Executions.sendRedirect("profili.zul");
     }
+    
+    @Command
+    public void goToModifica(@BindingParam("entCode") String entCode) {
+        if (entCode != null && !entCode.isEmpty()) {
+            Executions.sendRedirect("modificaProfilo.zul?entCode=" + entCode);
+        } else {
+            Clients.showNotification("Codice ENT_CODE non valido.", "warning", null, "middle_center", 2000);
+        }
+    }
+
 
     // Getters
     public Profile getProfile() { return profile; }
