@@ -130,16 +130,17 @@
 
 							<columns sizable="false">
 								<column label="Nome Aggregato"
-									width="20%" style="background-color:#7b002c; color:white;" />
-								<column label="Tipologia" width="15%"
+									width="18%" style="background-color:#7b002c; color:white;" />
+								<column label="Tipologia" width="13%"
 									style="background-color:#7b002c; color:white;" />
-								<column label="Descrizione" width="30%"
+								<column label="Descrizione" width="28%"
 									style="background-color:#7b002c; color:white;" />
-								<column label="Ad Personam" width="15%"
+								<column label="Ad Personam" width="13%"
 									style="background-color:#7b002c; color:white;" />
 								<column label="Ricertificabile"
-									width="15%" style="background-color:#7b002c; color:white;" />
-							
+									width="13%" style="background-color:#7b002c; color:white;" />
+								<column label="Azioni" width="15%"
+									style="background-color:#7b002c; color:white;" />
 							</columns>
 
 							<template name="model">
@@ -160,7 +161,20 @@
 
 									<hbox spacing="10px" align="center"
 										onClick="event.stopPropagation();">
-										
+										<!-- Icona Modifica -->
+										<image src="/images/edit-4.png"
+											height="24px"
+											onClick="@command('openEdit', nome_aggregato=each.nomeAggregato)"
+											style="cursor:pointer;" tooltiptext="Modifica aggregato" />
+
+										<!-- Icona Elimina -->
+										<image src="/images/trash2.png"
+											height="24px"
+											onClick="@command('confirmAndExecuteAggregati',
+                                                                 message='Sei sicuro di voler eliminare questo aggregato?',
+                                                                 commandName='deleteAggregato',
+                                                                 param=each)"
+											style="cursor:pointer;" tooltiptext="Elimina aggregato" />
 									</hbox>
 								</row>
 							</template>

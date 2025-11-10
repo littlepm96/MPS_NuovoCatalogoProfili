@@ -2,6 +2,9 @@ package com.nttdata.model;
 
 public class Aggregato {
 
+    // ID primario
+    private Integer idAggregato; // id_aggregato (PK)
+
     // Campi principali (mostrati nella tabella)
     private String nome_aggregato;
     private String tipologia;
@@ -18,6 +21,10 @@ public class Aggregato {
     private String note;
 
     public Aggregato() {}
+
+    // Getters e Setters
+    public Integer getIdAggregato() { return idAggregato; }
+    public void setIdAggregato(Integer idAggregato) { this.idAggregato = idAggregato; }
 
     // Getters e Setters per i campi principali
     public String getNomeAggregato() { return nome_aggregato; }
@@ -57,7 +64,8 @@ public class Aggregato {
     @Override
     public String toString() {
         return "Aggregato{" +
-                "nome_aggregato='" + nome_aggregato + '\'' +
+                "idAggregato=" + idAggregato +
+                ", nome_aggregato='" + nome_aggregato + '\'' +
                 ", tipologia='" + tipologia + '\'' +
                 ", descrizione='" + descrizione + '\'' +
                 ", ad_personam='" + ad_personam + '\'' +
