@@ -250,13 +250,14 @@ public class ProfiliViewModel {
 	 * Apre la pagina dei dettagli del profilo
 	 */
 	@Command
-	public void openDetails(@BindingParam("entCode") String entCode) {
-		if (entCode != null && !entCode.isEmpty()) {
-			Executions.sendRedirect("dettagliProfilo.zul?entCode=" + entCode);
-		} else {
-			Clients.showNotification("Codice ENT_CODE non valido!", "error", null, "middle_center", 2000);
-		}
+	public void openDetails(@BindingParam("profile") Profile profile) {
+	    if (profile != null && profile.getEntCode() != null && !profile.getEntCode().isEmpty()) {
+	        Executions.sendRedirect("dettagliProfilo.zul?entCode=" + profile.getEntCode());
+	    } else {
+	        Clients.showNotification("Codice ENT_CODE non valido!", "error", null, "middle_center", 2000);
+	    }
 	}
+
 
 	/**
 	 * Elimina un profilo dopo conferma
@@ -264,54 +265,42 @@ public class ProfiliViewModel {
 	@Command
 	@NotifyChange({ "filteredProfiles", "totalRecords", "totalPages", "currentPage", "recordInfo", "pageInfo" })
 	public void deleteProfile(@BindingParam("param") Profile profile) {
-		if (profile == null || profile.getEntCode() == null) {
-			Clients.showNotification("Profilo non valido!", "error", null, "middle_center", 2000);
-			return;
-		}
+	    if (profile == null) {
+	        Clients.showNotification("Profilo non valido!", "error", null, "middle_center", 2000);
+	        return;
+	    }
 
-		try {
-			boolean success = profileService.deleteProfile(profile.getEntCode());
+	    try {
+	        boolean success = profileService.deleteProfileById(profile.getId()); // <-- usa ID
 
-			if (success) {
-				Clients.showNotification("Profilo eliminato con successo!", "info", null, "middle_center", 2000);
-
-				// Ricarica i dati dopo l'eliminazione
-				loadProfiles();
-			} else {
-				Clients.showNotification("Errore durante l'eliminazione del profilo!", "error", null, "middle_center",
-						2500);
-			}
-		} catch (Exception e) {
-			Clients.showNotification("Errore: " + e.getMessage(), "error", null, "middle_center", 3000);
-			e.printStackTrace();
-		}
+	        if (success) {
+	            Clients.showNotification("Profilo eliminato con successo!", "info", null, "middle_center", 2000);
+	            loadProfiles(); // ricarica i dati
+	        } else {
+	            Clients.showNotification("Errore durante l'eliminazione del profilo!", "error", null, "middle_center", 2500);
+	        }
+	    } catch (Exception e) {
+	        Clients.showNotification("Errore: " + e.getMessage(), "error", null, "middle_center", 3000);
+	        e.printStackTrace();
+	    }
 	}
+
 
 	/**
 	 * Mostra una finestra di conferma prima di eseguire un comando
 	 */
 	@Command
 	public void confirmAndExecuteProfile(@BindingParam("message") String message,
-	                              @BindingParam("commandName") String commandName,
-	                              @BindingParam("param") Profile param) {
+			@BindingParam("commandName") String commandName, @BindingParam("param") Profile param) {
 
-	    // Imposta il riferimento al ViewModel principale nel desktop
-	    Executions.getCurrent().getDesktop().setAttribute("mainVM", this);
+		// Imposta il riferimento al ViewModel principale nel desktop
+		Executions.getCurrent().getDesktop().setAttribute("mainVM", this);
 
-	    // Crea e mostra il popup personalizzato
-	    org.zkoss.zul.Window window = 
-	            (org.zkoss.zul.Window) Executions.createComponents(
-	                    "/zul/popUpConferma.zul", null,
-	                    java.util.Map.of(
-	                            "message", message,
-	                            "commandName", commandName,
-	                            "param", param
-	                    )
-	            );
-	    window.doModal();
+		// Crea e mostra il popup personalizzato
+		org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents("/zul/popUpConferma.zul", null,
+				java.util.Map.of("message", message, "commandName", commandName, "param", param));
+		window.doModal();
 	}
-
-
 
 	// =========================
 	// GETTER E SETTER
