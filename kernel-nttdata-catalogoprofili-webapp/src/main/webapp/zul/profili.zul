@@ -160,7 +160,7 @@
 
 							<template name="model">
 								<row
-									onClick="@command('openDetails', entCode=each.entCode)"
+									onClick="@command('openDetails', profile=each)"
 									style="cursor:pointer;"
 									tooltiptext="Clicca per vedere i dettagli">
 									<label value="@load(each.target)" />
@@ -172,10 +172,10 @@
 									<hbox spacing="10px" align="center"
 										onClick="event.stopPropagation();">
 										<!-- Icona Modifica -->
-										<image src="/images/edit-4.png"
-											height="24px"
-											onClick="@command('openEdit', entCode=each.entCode)"
-											style="cursor:pointer;" tooltiptext="Modifica profilo" />
+											<image src="/images/edit-4.png"
+												height="24px"
+												onClick="@command('openEdit', entCode=each.entCode)"
+												style="cursor:pointer;" tooltiptext="Modifica profilo" />
 
 										<!-- Icona Elimina -->
 										<image src="/images/trash2.png"
