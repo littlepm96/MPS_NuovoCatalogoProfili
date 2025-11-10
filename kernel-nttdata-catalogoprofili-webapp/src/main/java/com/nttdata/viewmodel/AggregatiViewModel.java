@@ -245,19 +245,20 @@ public class AggregatiViewModel {
 	@Command
 	@NotifyChange({ "filteredAggregati", "totalRecords", "totalPages", "currentPage", "recordInfo", "pageInfo" })
 	public void deleteAggregato(@BindingParam("param") Aggregato aggregato) {
-		if (aggregato == null || aggregato.getNomeAggregato() == null) {
+		if (aggregato == null || aggregato.getIdAggregato() == null) {
 			Clients.showNotification("Aggregato non valido!", "error", null, "middle_center", 2000);
 			return;
 		}
 
 		try {
-			boolean success = aggregatoService.deleteAggregato(aggregato.getNomeAggregato());
+			System.out.println("🗑️ Tentativo di eliminazione aggregato ID: " + aggregato.getIdAggregato());
+			boolean success = aggregatoService.deleteAggregato(aggregato.getIdAggregato());
 
 			if (success) {
-				Clients.showNotification("Aggregato eliminato!", "info", null, "middle_center", 2000);
+				Clients.showNotification("Aggregato eliminato con successo!", "info", null, "middle_center", 2000);
 				loadAggregati();
 			} else {
-				Clients.showNotification("Errore eliminazione!", "error", null, "middle_center", 2500);
+				Clients.showNotification("Errore durante l'eliminazione!", "error", null, "middle_center", 2500);
 			}
 		} catch (Exception e) {
 			Clients.showNotification("Errore: " + e.getMessage(), "error", null, "middle_center", 3000);

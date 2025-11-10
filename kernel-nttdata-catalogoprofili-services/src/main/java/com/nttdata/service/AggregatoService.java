@@ -13,7 +13,7 @@ public class AggregatoService {
 	public List<Aggregato> getAllAggregati() {
         List<Aggregato> aggregati = new ArrayList<>();
 
-        String sql = "SELECT nome_aggregato, tipologia, descrizione, ad_personam, ricertificabile FROM ncp.aggregato";
+        String sql = "SELECT id_aggregato, nome_aggregato, tipologia, descrizione, ad_personam, ricertificabile FROM ncp.aggregato";
 
         System.out.println("🔍 Esecuzione query: " + sql);
 
@@ -24,6 +24,7 @@ public class AggregatoService {
             int count = 0;
             while (rs.next()) {
                 Aggregato a = new Aggregato();
+                a.setIdAggregato(rs.getInt("id_aggregato"));
                 a.setNomeAggregato(rs.getString("nome_aggregato"));
                 a.setTipologia(rs.getString("tipologia"));
                 a.setDescrizione(rs.getString("descrizione"));
@@ -45,18 +46,30 @@ public class AggregatoService {
         return aggregati;
     }
 
-	public boolean deleteAggregato(String nome_aggregato) {
-		if (nome_aggregato == null)
+	/**
+	 * Elimina un aggregato in base all'ID
+	 */
+	public boolean deleteAggregato(Integer idAggregato) {
+		if (idAggregato == null)
 			return false;
 
-		String sql = "DELETE FROM aggregato WHERE nome_aggregato = ?";
+		String sql = "DELETE FROM ncp.aggregato WHERE id_aggregato = ?";
+
+		System.out.println("🗑️ Eliminazione aggregato con ID: " + idAggregato);
 
 		try (Connection conn = DatabaseConnection.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-			stmt.setString(1, nome_aggregato);
+			stmt.setInt(1, idAggregato);
 			int rows = stmt.executeUpdate();
-			return rows > 0;
+			
+			if (rows > 0) {
+				System.out.println("✅ Aggregato eliminato con successo!");
+				return true;
+			} else {
+				System.out.println("⚠️ Nessun aggregato trovato con ID: " + idAggregato);
+				return false;
+			}
 
 		} catch (SQLException e) {
 			System.err.println("❌ Errore eliminazione aggregato: " + e.getMessage());
@@ -96,7 +109,7 @@ public class AggregatoService {
 
 	public Aggregato getAggregatoByNome(String nomeAggregatoAp) {
         String sql = """
-            SELECT nome_aggregato, tipologia, descrizione, ad_personam, ricertificabile
+            SELECT id_aggregato, nome_aggregato, tipologia, descrizione, ad_personam, ricertificabile
             FROM ncp.aggregato
             WHERE nome_aggregato = ?
         """;
@@ -109,6 +122,7 @@ public class AggregatoService {
  
             if (rs.next()) {
                 Aggregato a = new Aggregato();
+                a.setIdAggregato(rs.getInt("id_aggregato"));
                 a.setNomeAggregato(rs.getString("nome_aggregato"));
                 a.setTipologia(rs.getString("tipologia"));
                 a.setDescrizione(rs.getString("descrizione"));
